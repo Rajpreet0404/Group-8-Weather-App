@@ -1,8 +1,12 @@
+// App.js
+import React from "react";
+import "./style.css"; // Import the CSS file
+
 function App() {
   return (
-    <>
-    <h1>My React App</h1>
-    </>
+    <div className="app-container">
+      <h1>My React App</h1>
+    </div>
   );
 }
 
