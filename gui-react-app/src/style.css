@@ -8,6 +8,9 @@
     background-size: cover;
     height:100vh;
     width: auto;
+    font-family: "Inter", sans-serif;
+    align-items: center;
+    justify-items: center;
 }
 
 .box{
@@ -27,6 +30,58 @@
     width: 5vh;
     height: auto;
 }
-.locationtext{
-    font-family: "Inter", sans-serif; ;
+
+.locationtext h1{
+    font-weight: 400;
+
+}
+
+.weather{
+    flex-direction: column;
+    justify-items: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    line-height: 0.5px;
+    gap: 5px;
+}
+
+.weather h1{
+    filter: drop-shadow(1px 4px 7px black)
+}
+
+.weathericon img{
+    width: 10vh;
+    height: auto;
+    filter: drop-shadow(5px 5px 5px black);
+}
+
+.currentweather h1{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: none;
+    font-weight: 500; 
+    font-size: xx-large;
+}
+
+.windspeed h1{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: none;
+    font-weight: 400;
+    font-size: medium; 
+}
+
+.feelslike h1{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: none;
+    font-weight: 400; 
+    font-size: medium; 
+}
+
+.temperature{
+    width: 60%;
+    align-items: center;
+    border-radius: 1.25rem;
+    opacity: 0.4;
+    background: #FEE;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
