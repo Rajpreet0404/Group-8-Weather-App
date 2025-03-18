@@ -1,3 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+.container{
+    width: 100vw;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.box{
+    display:flex;
+    height: 100px;
+    min-width: 100px;
+}
+
+.location{
 /* App.css */
 .app-container {
     background-image: url("C:\Users\Rajpr\Group-8-Weather-App\gui-react-app\public\background.png"); /* Correct path to the image */
@@ -6,11 +21,8 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-  }
-  
-  h1 {
-    color: white;
-  }
-  
+}
+
+.locationtext{
+    font-family: "Inter", sans-serif; ;
+}
