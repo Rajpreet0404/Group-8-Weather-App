@@ -1,6 +1,6 @@
 /* App.css */
 .app-container {
-    background-image: url("/Background.png"); /* Correct path to the image */
+    background-image: url("C:\Users\Rajpr\Group-8-Weather-App\gui-react-app\public\Background.png"); /* Correct path to the image */
     background-size: cover;
     background-position: center;
     min-height: 100vh;
