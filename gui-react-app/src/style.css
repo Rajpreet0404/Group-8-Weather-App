@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 .container{
@@ -13,6 +14,15 @@
 }
 
 .location{
+=======
+/* App.css */
+.app-container {
+    background-image: url("C:\Users\Rajpr\Group-8-Weather-App\gui-react-app\public\background.png"); /* Correct path to the image */
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+>>>>>>> bc24fc14e36fa2d89b4fde151d43c61a82bf3fb7
     justify-content: center;
 }
 
