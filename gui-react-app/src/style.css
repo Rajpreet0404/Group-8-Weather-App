@@ -48,13 +48,27 @@
 
 .tempBox{
     grid-area: temp;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     width: 95%;
     height: 100%;
     flex-shrink: 0;
     border-radius: 1.25rem;
-    opacity: 0.4;
-    background: #FEE;
+    background: rgb(255, 238, 238, 0.4);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+}
+
+.miniTemp button{
+    color: #000;
+    font-family: Inter;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    border-style: none;
+    cursor: pointer;
 }
     
 .weatherimage img{
@@ -110,4 +124,28 @@
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+}
+
+.miniTemp{
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.miniTemp h1{
+    color: #000;
+    font-family: Inter;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.miniTemp img{
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
 }

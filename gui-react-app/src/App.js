@@ -32,6 +32,36 @@ function App() {
       </section> 
       {/* Temperature overview */}
       <section className="tempBox">
+        <div className="miniTemp">
+          <h1>13:00</h1>
+          <img src="/image5.png" alt="Sunny"/>
+          <h1>21°</h1>
+        </div>
+        <div className="miniTemp">
+          <h1>14:00</h1>
+          <img src="/image4.png" alt="Sunny"/>
+          <h1>15°</h1>
+        </div>
+        <div className="miniTemp">
+          <h1>15:00</h1>
+          <img src="/image9.png" alt="Sunny"/>
+          <h1>13°</h1>
+        </div>
+        <div className="miniTemp">
+          <h1>16:00</h1>
+          <img src="/image7.png" alt="Sunny"/>
+          <h1>11°</h1>
+        </div>
+        <div className="miniTemp">
+          <h1>17:00</h1>
+          <img src="/image15.png" alt="Sunny"/>
+          <h1>7°</h1>
+        </div>
+        <div className="miniTemp">
+          <h1></h1>
+          <button>...</button>
+          <h1></h1>
+        </div>
       </section>
     </section>
   );
