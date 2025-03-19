@@ -211,6 +211,7 @@
 }
 
 .activitiesBox{
+    margin-top: -2rem;
     grid-area: activities;
     display: flex;
     flex-direction: column;
