@@ -6,16 +6,17 @@ import "./style.css"; // Import the CSS file
 function App() {
   return (
     <body>
-      <div className="box location">
+      {/* Location flex box */}
+      <section className="locationBox">
         <div className="weatherimage">
           <img src="/locationimage.png" alt="Background" />
         </div>
         <div className="locationtext">
           <h1>Current Location</h1>
         </div>
-      </div>
-
-      <div className="box weather">
+      </section>
+      {/* Weather flex box */}
+      <section className="weatherBox">
         <div className="currentweather">
           <h1>19°</h1>
         </div>
@@ -28,7 +29,7 @@ function App() {
         <div className="feelslike">
           <h1>Feels like 19°</h1>
         </div>
-      </div>
+      </section> 
 
       <div className="box temperature">
         
