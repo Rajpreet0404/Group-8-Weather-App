@@ -1,5 +1,6 @@
 // App.js
 import React from "react";
+import "./reset.css"; // Import the CSS file
 import "./style.css"; // Import the CSS file
 
 function App() {
