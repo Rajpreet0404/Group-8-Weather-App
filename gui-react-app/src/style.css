@@ -23,6 +23,20 @@
 
 }
 
+.locationBox aside button{
+    border-style: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin-right: 5rem;
+}
+
+.locationBox aside button img{
+    width: 2.4375rem;
+    height: 2.4375rem;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
 .locationBox{
     grid-area: location;
     display:flex;
@@ -92,6 +106,7 @@
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    margin-right: 11rem;
 }
 
 .weathericon img{
