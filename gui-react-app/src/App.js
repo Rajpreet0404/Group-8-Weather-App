@@ -19,6 +19,12 @@ const dailyTemps = [
   { day: "Friday", temp: "21°/10°", imgSrc: "/image5.png", alt: "Sunny" },
 ];
 
+const activityImages = [
+  { imgSrc: "/image11.png", alt: "Basketball" },
+  { imgSrc: "/image12.png", alt: "Running" },
+  { imgSrc: "/image13.png", alt: "Football" },
+];
+
 function App() {
   return (
     <section className="app">
@@ -70,6 +76,17 @@ function App() {
             <img src={dailyTemp.imgSrc} alt={dailyTemp.alt} />
           </div>
         ))}
+      </section>
+      {/* Activities flex box */}
+      <section className="activitiesBox">
+        <h1>Best activities to do today</h1>
+        <div className="activityImages">
+          {activityImages.map((activityImage, index) => (
+            <div className="activity" key={index}>
+              <img src={activityImage.imgSrc} alt={activityImage.alt} />
+            </div>
+          ))}
+        </div>
       </section>
     </section>
   );
