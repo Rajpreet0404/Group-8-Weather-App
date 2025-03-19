@@ -5,7 +5,7 @@ import "./style.css"; // Import the CSS file
 
 function App() {
   return (
-    <body>
+    <section className="app">
       {/* Location flex box */}
       <section className="locationBox">
         <div className="weatherimage">
@@ -31,10 +31,10 @@ function App() {
         </div>
       </section> 
 
-      <div className="box temperature">
+      <div className="tempBox">
         
       </div>
-    </body>
+    </section>
   );
 }
 
