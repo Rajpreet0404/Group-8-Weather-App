@@ -3,6 +3,22 @@ import React from "react";
 import "./reset.css"; // Import the CSS file
 import "./style.css"; // Import the CSS file
 
+const hourlyTemps = [
+  { time: "13:00", imgSrc: "/image5.png", alt: "Sunny",  temp: "21°"},
+  { time: "14:00", imgSrc: "/image4.png", alt: "Partly cloudy",  temp: "15°" },
+  { time: "15:00", imgSrc: "/image9.png", alt: "Heavy rain",  temp: "13°" },
+  { time: "16:00", imgSrc: "/image7.png", alt: "Lightning",  temp: "11°" },
+  { time: "17:00", imgSrc: "/image15.png", alt: "Partly cloudy",  temp: "7°" },
+];
+
+const dailyTemps = [
+  { day: "Monday", temp: "15°/6°", imgSrc: "/image9.png", alt: "Heavy rain"},
+  { day: "Tuesday", temp: "11°/3°", imgSrc: "/image4.png", alt: "Partly cloudy" },
+  { day: "Wednesday", temp: "15°/8°", imgSrc: "/image15.png", alt: "Partly cloudy" },
+  { day: "Thursday", temp: "14°/7°", imgSrc: "/image7.png", alt: "Lightning" },
+  { day: "Friday", temp: "21°/10°", imgSrc: "/image5.png", alt: "Sunny" },
+];
+
 function App() {
   return (
     <section className="app">
@@ -30,38 +46,30 @@ function App() {
           <h1>Feels like 19°</h1>
         </div>
       </section> 
-      {/* Temperature overview */}
+      {/* Hourly temperature overview */}
       <section className="tempBox">
-        <div className="miniTemp">
-          <h1>13:00</h1>
-          <img src="/image5.png" alt="Sunny"/>
-          <h1>21°</h1>
-        </div>
-        <div className="miniTemp">
-          <h1>14:00</h1>
-          <img src="/image4.png" alt="Sunny"/>
-          <h1>15°</h1>
-        </div>
-        <div className="miniTemp">
-          <h1>15:00</h1>
-          <img src="/image9.png" alt="Sunny"/>
-          <h1>13°</h1>
-        </div>
-        <div className="miniTemp">
-          <h1>16:00</h1>
-          <img src="/image7.png" alt="Sunny"/>
-          <h1>11°</h1>
-        </div>
-        <div className="miniTemp">
-          <h1>17:00</h1>
-          <img src="/image15.png" alt="Sunny"/>
-          <h1>7°</h1>
-        </div>
+        {hourlyTemps.map((hourlyTemp, index) => (
+          <div className="miniTemp" key={index}>
+            <h1>{hourlyTemp.time}</h1>
+            <img src={hourlyTemp.imgSrc} alt={hourlyTemp.alt} />
+            <h1>{hourlyTemp.temp}</h1>
+          </div>
+        ))}
         <div className="miniTemp">
           <h1></h1>
           <button>...</button>
           <h1></h1>
         </div>
+      </section>
+      {/* Daily temperature overview */}
+      <section className="dailyTempBox">
+        {dailyTemps.map((dailyTemp, index) => (
+          <div className="dailyTemp" key={index}>
+            <h1>{dailyTemp.day}</h1>
+            <h2>{dailyTemp.temp}</h2>
+            <img src={dailyTemp.imgSrc} alt={dailyTemp.alt} />
+          </div>
+        ))}
       </section>
     </section>
   );
