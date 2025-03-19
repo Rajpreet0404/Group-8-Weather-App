@@ -30,12 +30,9 @@ function App() {
           <h1>Feels like 19°</h1>
         </div>
       </section> 
-
-      
-
-      <div className="tempBox">
-        
-      </div>
+      {/* Temperature overview */}
+      <section className="tempBox">
+      </section>
     </section>
   );
 }
