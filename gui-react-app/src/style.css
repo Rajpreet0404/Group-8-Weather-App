@@ -238,6 +238,9 @@
 }
 
 .activity{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 6.25rem;
     height: 6.25rem;
     flex-shrink: 0;
