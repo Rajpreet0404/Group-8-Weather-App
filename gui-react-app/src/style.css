@@ -12,7 +12,7 @@
     align-items: center;
     justify-items: center;
     grid-template-areas: 
-    ".. location .."
+    "location location location"
     ".. weather .."
     "temp temp temp"
     "tempBox tempBox tempBox"
@@ -48,29 +48,16 @@
 
 .tempBox{
     grid-area: temp;
-    width: 23.125rem;
+    width: 95%;
     height: 6.625rem;
     flex-shrink: 0;
     border-radius: 1.25rem;
     opacity: 0.4;
     background: #FEE;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-top: -2rem;
 }
     
-
-.box{
-    display:flex;
-    height: 100px;
-    min-width: 100px;
-}
-
-.location{
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-}
-
 .weatherimage img{
     width: 2.0625rem;
     height: 2.0625rem;
@@ -87,21 +74,6 @@
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-
-}
-
-.weather{
-    flex-direction: column;
-    justify-items: flex-start;
-    align-items: center;
-    width: 100%;
-    height: auto;
-    line-height: 0.5px;
-    gap: 5px;
-}
-
-.weather h1{
-    filter: drop-shadow(1px 4px 7px black)
 }
 
 .weathericon img{
@@ -139,13 +111,4 @@
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-}
-
-.temperature{
-    width: 60%;
-    align-items: center;
-    border-radius: 1.25rem;
-    opacity: 0.4;
-    background: #FEE;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
