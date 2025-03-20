@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 body{
-    background-image: url("../public/Background.png");
+    background-image: url("../public/settingsbackground.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -12,113 +12,50 @@ body{
     justify-items: center;
 }
 
-.locationBox{
-    display:flex;
-    height: 10rem;
-    min-width: 10rem;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-}
-
-.weatherBox{
+.container{
     display: flex;
     flex-direction: column;
-    justify-items: flex-start;
-    align-items: center;
-    width: 20rem;
-    height: auto;
-    margin-top: -4rem;
+    height: 100vh;
+    width: 75vw;
+    border: 2px dashed red;
 }
 
 .box{
-    display:flex;
-    height: 100px;
-    min-width: 100px;
-}
-
-.location{
     display: flex;
+    border: 2px dashed red;
+}
+
+.sidebar{
+    justify-content: flex-start;
+}
+
+.sidebarimage img{
+    height: 5vw;
+    width: auto;
+}
+
+.title{
     justify-content: center;
-    flex-direction: row;
-    align-items: center;
 }
 
-.weatherimage img{
-    width: 2.0625rem;
-    height: 2.0625rem;
-    flex-shrink: 0;
-    aspect-ratio: 1/1;
-    padding: 0.5rem;
-}
-
-.locationtext h1{
-    color: #000;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-family: Inter;
-    font-size: 0.9375rem;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-
-}
-
-.weather{
-    flex-direction: column;
-    justify-items: flex-start;
-    align-items: center;
+.settingstext {
+    font-size: 50px;
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .settingstext::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1%; /* Position under text */
     width: 100%;
-    height: auto;
-    line-height: 0.5px;
-    gap: 5px;
-}
-
-.weather h1{
-    filter: drop-shadow(1px 4px 7px black)
-}
-
-.weathericon img{
-    width: 10vh;
-    height: auto;
-    filter: drop-shadow(5px 5px 5px black);
-}
-
-.currentweather h1{
-    color: #000;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-family: Inter;
-    font-size: 3.375rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
-.windspeed h1{
-    color: #000;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-family: Inter;
-    font-size: 0.9375rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: normal;
-    padding: 0.5rem;
-}
-
-.feelslike h1{
-    color: #000;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-family: Inter;
-    font-size: 0.9375rem;
-    font-style: normal;
-    font-weight: 600;
-    line-height: normal;
-}
-
-.temperature{
-    width: 60%;
-    align-items: center;
-    border-radius: 1.25rem;
-    opacity: 0.4;
-    background: #FEE;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-}
+    height: 10%; /* Thickness of the underline */
+    background-color: black;
+    border-radius: 15rem; /* Rounded edges */
+  
+    /* Create a gap under the "g" */
+    clip-path: polygon(0% 0%, 70% 0%, 70% 100%, 85% 100%, 85% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+  
