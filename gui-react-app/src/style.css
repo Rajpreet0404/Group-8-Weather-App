@@ -80,7 +80,7 @@ body{
     display:flex;
     flex-direction: row;
     justify-content: space-between;
-    }
+}
 
 .settings:last-child{
     padding-bottom: 1rem;
