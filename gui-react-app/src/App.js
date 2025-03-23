@@ -1,20 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Sidebar from "./components/navbar";
 import Settings from "./pages/settings";
+import Home from "./pages/home"
 
 function App() {
   return (
     <Router>
-      <div style={{ display: "flex" }}>
-        <Sidebar />
-        <div style={{ flex: 1, padding: "20px" }}>
-          <Routes>
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/" element={<h1>Home Page</h1>} />
-          </Routes>
-        </div>
-      </div>
+      <Routes>
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
     </Router>
   );
 }

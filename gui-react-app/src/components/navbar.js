@@ -1,17 +1,26 @@
 import React from "react";
-import { Sidebar, Menu, MenuItem, SubMenu, ProSidebarProvider } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
 
 const CustomSidebar = () => {
   return (
-    <ProSidebarProvider>
-      <Sidebar style={{ height: "100vh", backgroundColor: "#2c3e50", color: "#fff" }}>
+    <div style={{ display: "flex", height: "100vh" }}>
+      <Sidebar className="app">
         <Menu>
-          <MenuItem component={<Link to="/" />}>Home</MenuItem>
-          <MenuItem component={<Link to="/settings" />}>Settings</MenuItem>
+          <MenuItem className="menu1">
+            <h2>QUICKPAY</h2>
+          </MenuItem>
+          <MenuItem> Dashboard </MenuItem>
+          <MenuItem> Invoices </MenuItem>
+          <MenuItem> Charts </MenuItem>
+          <MenuItem> Wallets </MenuItem>
+          <MenuItem> Transactions </MenuItem>
+          <MenuItem> Settings </MenuItem>
+          <MenuItem> Logout </MenuItem>
         </Menu>
       </Sidebar>
-    </ProSidebarProvider>
+      <h1>WELCOME TO QUICKPAY</h1>
+    </div>
   );
 };
 
