@@ -24,9 +24,12 @@
 }
 
 .locationBox aside button{
+    position: absolute;
     border-style: none;
     background-color: transparent;
     cursor: pointer;
+    right: 83%;
+    transform: translateX(-50%);
 }
 
 .locationBox aside button img{
