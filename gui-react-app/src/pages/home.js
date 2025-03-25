@@ -29,9 +29,6 @@ function Home() {
     <section className="app">
       {/* Location flex box */}
       <section className="locationBox">
-        <aside>
-          <button><img src="/image10.png" alt="Side bar" /></button>
-        </aside>
         <div className="weatherimage">
           <img src="/locationimage.png" alt="Background" />
         </div>
