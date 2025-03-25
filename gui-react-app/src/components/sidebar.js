@@ -31,7 +31,7 @@ const Sidebar = () => {
             <li><a href="/">Home</a></li>
             <li><a href="/">Profile</a></li>
             <li><a href="/">My Sports</a></li>
-            <li><a href="/">Settings</a></li>
+            <li><a href="/settings">Settings</a></li>
           </ul>
         </div>
       </div>
