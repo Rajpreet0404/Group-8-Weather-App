@@ -35,11 +35,6 @@ function Settings() {
 
   return (
     <div className="container">
-      <nav className="box sidebar">
-        <div className="sidebarimage">
-          <img src="/sidebaricon.png" alt="sidebar" />
-        </div>
-      </nav>
 
       <header className="box title">
         <div className="settingstext">
