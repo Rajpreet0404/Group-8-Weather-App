@@ -67,6 +67,7 @@ function Home() {
       const currentApiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
       const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
 
+      // Fetch current weather (current hour)
       fetch(currentApiURL)
         .then((response) => response.json())
         .then((data) => {
@@ -95,6 +96,7 @@ function Home() {
           console.error("❌ Error fetching current weather data:", error.message);
         });
 
+      // Fetch hourly forecast (remaining hours)
       fetch(hourlyApiURL)
         .then((response) => response.json())
         .then((data) => {
@@ -106,7 +108,7 @@ function Home() {
           const filteredForecasts = data.list.filter((item) => {
             const forecastDate = new Date(item.dt * 1000);
             const forecastHour = forecastDate.getHours();
-            return forecastHour >= currentHour && forecastHour < 24;
+            return forecastHour > currentHour && forecastHour < 24;
           });
 
           const nextFiveHours = filteredForecasts.slice(0, 5).map((item) => ({
@@ -119,11 +121,11 @@ function Home() {
             temp: `${Math.round(item.main.temp)}°C`,
           }));
 
-          setHourlyTemps(nextFiveHours);
+          setHourlyTemps([{ time: "Now", imgSrc: weatherIcon, alt: "Current weather", temp: `${Math.round(currentWeather)}°C` }, ...nextFiveHours]);
         })
         .catch((error) => console.error("❌ Error fetching weather data:", error));
     }
-  }, [lat, lon]); 
+  }, [lat, lon, currentWeather, weatherIcon]); 
 
 
   function getWeatherIcon(iconCode) {
