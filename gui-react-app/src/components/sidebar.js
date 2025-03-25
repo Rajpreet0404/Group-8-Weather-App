@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./sidebar.css";
+import { Link } from "react-router-dom";
+
 
 const Sidebar = () => {
   const [closedmenu, setclosemenu] = useState(true);
@@ -28,10 +30,10 @@ const Sidebar = () => {
         </div>
         <div className="items">
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/">Profile</a></li>
-            <li><a href="/">My Sports</a></li>
-            <li><a href="/settings">Settings</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/profile">Profile</Link></li>
+            <li><Link to="/sports">My Sports</Link></li>
+            <li><Link to="/settings">Settings</Link></li>
           </ul>
         </div>
       </div>
