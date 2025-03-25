@@ -1,3 +1,10 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrollbars */
+}
+
 /* Sidebar is hidden when inactive */
 .sidebarinactive {
     transform: translateX(-100%);
@@ -12,7 +19,7 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    height: 99%;
+    height: 100%;
     width: fit-content;
     border-radius: 0rem 1.25rem 1.25rem 0rem;
     background: rgba(255, 255, 255, 0.75);
