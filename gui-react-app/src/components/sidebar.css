@@ -1,0 +1,112 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrollbars */
+}
+
+/* Sidebar is hidden when inactive */
+.sidebarinactive {
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    position: absolute;
+    display: none;
+  }
+  
+/* Sidebar styles when active */
+.sidebar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+    width: fit-content;
+    border-radius: 0rem 1.25rem 1.25rem 0rem;
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 2rem;
+    z-index: 1000;
+    opacity: 1;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* Close button */
+.closemenu {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.closemenu img {
+width: 2.5rem;
+cursor: pointer;
+}
+
+/* When the sidebar is inactive, show only the open menu button */
+.openmenu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+}
+
+.openmenu img {
+    width: 2.5rem;
+    cursor: pointer;
+}
+
+.greeting h1{
+    color: #212121;
+    font-family: Inter;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+.greeting h2{
+    color: #000;
+    font-family: Inter;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.items{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.items ul{
+    list-style: none; 
+}
+
+.items li{
+    padding: 0.5rem 0;
+}
+
+.items a{
+    color: #000;
+    font-family: Inter;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none; /* Removes underline */
+    color: black; /* Default link color */
+}
+
+.items a:visited {
+    color: black; /* Prevents purple color after clicking */
+}
+
+.items a:focus, a:active {
+    text-decoration: none; /* Ensures no underline when clicked */
+    color: black; /* Keeps the same color on click */
+}

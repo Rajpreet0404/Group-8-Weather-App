@@ -1,7 +1,8 @@
-// App.js
 import React from "react";
-import "./reset.css"; // Import the CSS file
-import "./style.css"; // Import the CSS file
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Settings from "./pages/settings";
+import Home from "./pages/home"
+import Sidebar from "./components/sidebar";
 
 const hourlyTemps = [
   { time: "13:00", imgSrc: "/image5.png", alt: "Sunny",  temp: "21°"},
@@ -27,68 +28,13 @@ const activityImages = [
 
 function App() {
   return (
-    <section className="app">
-      {/* Location flex box */}
-      <section className="locationBox">
-        <div className="weatherimage">
-          <img src="/locationimage.png" alt="Background" />
-        </div>
-        <div className="locationtext">
-          <h1>Current Location</h1>
-        </div>
-      </section>
-      {/* Weather flex box */}
-      <section className="weatherBox">
-        <div className="currentweather">
-          <h1>19°</h1>
-        </div>
-        <div className="weathericon">
-          <img src="/currentweather.png" alt="Current Weather"/>
-        </div>
-        <div className="windspeed">
-          <h1>Wind Speed: 6 mph</h1>
-        </div>
-        <div className="feelslike">
-          <h1>Feels like 19°</h1>
-        </div>
-      </section> 
-      {/* Hourly temperature overview */}
-      <section className="tempBox">
-        {hourlyTemps.map((hourlyTemp, index) => (
-          <div className="miniTemp" key={index}>
-            <h1>{hourlyTemp.time}</h1>
-            <img src={hourlyTemp.imgSrc} alt={hourlyTemp.alt} />
-            <h1>{hourlyTemp.temp}</h1>
-          </div>
-        ))}
-        <div className="miniTemp">
-          <h1></h1>
-          <button>...</button>
-          <h1></h1>
-        </div>
-      </section>
-      {/* Daily temperature overview */}
-      <section className="dailyTempBox">
-        {dailyTemps.map((dailyTemp, index) => (
-          <div className="dailyTemp" key={index}>
-            <h1>{dailyTemp.day}</h1>
-            <h2>{dailyTemp.temp}</h2>
-            <img src={dailyTemp.imgSrc} alt={dailyTemp.alt} />
-          </div>
-        ))}
-      </section>
-      {/* Activities flex box */}
-      <section className="activitiesBox">
-        <h1>Best activities to do today</h1>
-        <div className="activityImages">
-          {activityImages.map((activityImage, index) => (
-            <div className="activity" key={index}>
-              <img src={activityImage.imgSrc} alt={activityImage.alt} />
-            </div>
-          ))}
-        </div>
-      </section>
-    </section>
+    <Router>
+      <Sidebar />
+      <Routes>
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
   );
 }
 
