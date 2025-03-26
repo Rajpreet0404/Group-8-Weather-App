@@ -3,23 +3,6 @@ import "./reset.css"; // Import the CSS file
 import "./homestyle.css"; // Import the CSS file
 
 const apiKey = "fa0315bf1aaefb0d246fe0e1feeca3b3";
-/*
-const lat = 51.525012;
-const lon = -0.033456;
-const units = "metric";
-const currentApiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
-const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
-*/
-
-/*
-const dailyTemps = [
-  { day: "Monday", temp: "15°/6°", imgSrc: "/image9.png", alt: "Heavy rain"},
-  { day: "Tuesday", temp: "11°/3°", imgSrc: "/image4.png", alt: "Partly cloudy" },
-  { day: "Wednesday", temp: "15°/8°", imgSrc: "/image15.png", alt: "Partly cloudy" },
-  { day: "Thursday", temp: "14°/7°", imgSrc: "/image7.png", alt: "Lightning" },
-  { day: "Friday", temp: "21°/10°", imgSrc: "/image5.png", alt: "Sunny" },
-];
-*/
 
 const activityImages = [
   { imgSrc: "/image11.png", alt: "Basketball" },
@@ -71,7 +54,6 @@ function Home() {
       const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
       const dailyApiURL = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=6&appid=${apiKey}&units=${units}`;
 
-      // Fetch current weather (current hour)
       fetch(currentApiURL)
         .then((response) => response.json())
         .then((data) => {
@@ -100,7 +82,6 @@ function Home() {
           console.error("❌ Error fetching current weather data:", error.message);
         });
 
-      // Fetch hourly forecast (remaining hours)
       fetch(hourlyApiURL)
         .then((response) => response.json())
         .then((data) => {
