@@ -65,7 +65,7 @@ function Home() {
     if (lat && lon) {
       const units = "metric";
       const currentApiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
-      const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
+      const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
 
       // Fetch current weather (current hour)
       fetch(currentApiURL)
