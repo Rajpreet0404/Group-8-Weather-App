@@ -11,6 +11,7 @@ const currentApiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat
 const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
 */
 
+/*
 const dailyTemps = [
   { day: "Monday", temp: "15°/6°", imgSrc: "/image9.png", alt: "Heavy rain"},
   { day: "Tuesday", temp: "11°/3°", imgSrc: "/image4.png", alt: "Partly cloudy" },
@@ -18,6 +19,7 @@ const dailyTemps = [
   { day: "Thursday", temp: "14°/7°", imgSrc: "/image7.png", alt: "Lightning" },
   { day: "Friday", temp: "21°/10°", imgSrc: "/image5.png", alt: "Sunny" },
 ];
+*/
 
 const activityImages = [
   { imgSrc: "/image11.png", alt: "Basketball" },
@@ -27,6 +29,7 @@ const activityImages = [
 
 function Home() {
   const [hourlyTemps, setHourlyTemps] = useState([]);
+  const [dailyTemps, setDailyTemps] = useState([]);
   const [currentWeather, setCurrentWeather] = useState(null);
   const [weatherIcon, setWeatherIcon] = useState("");
   const [windSpeed, setWindSpeed] = useState(null);
@@ -66,6 +69,7 @@ function Home() {
       const units = "metric";
       const currentApiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
       const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
+      const dailyApiURL = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=6&appid=${apiKey}&units=${units}`;
 
       // Fetch current weather (current hour)
       fetch(currentApiURL)
@@ -124,6 +128,28 @@ function Home() {
           setHourlyTemps([{ time: "Now", imgSrc: weatherIcon, alt: "Current weather", temp: `${Math.round(currentWeather)}°C` }, ...nextFiveHours]);
         })
         .catch((error) => console.error("❌ Error fetching weather data:", error));
+
+        fetch(dailyApiURL)
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.list) throw new Error("Invalid API response format");
+
+          const nextSevenDays = data.list.map((item, index) => {
+            const date = new Date(item.dt * 1000);
+            const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+
+            return {
+              day: index === 0 ? "Today" : dayName,
+              temp: `${Math.round(item.temp.max)}°/${Math.round(item.temp.min)}°`,
+              imgSrc: getWeatherIcon(item.weather[0].icon),
+              alt: item.weather[0].description,
+            };
+          });
+
+          setDailyTemps(nextSevenDays);
+        })
+        .catch((error) => console.error("❌ Error fetching daily forecast:", error));
+
     }
   }, [lat, lon, currentWeather, weatherIcon]); 
 
