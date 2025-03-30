@@ -2,6 +2,30 @@ import React, { useState, useEffect } from "react";
 import "./reset.css"; // Import the CSS file
 import "./homestyle.css"; // Import the CSS file
 
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
+
+
 const apiKey = "fa0315bf1aaefb0d246fe0e1feeca3b3";
 
 const activityImages = [
@@ -17,7 +41,7 @@ function Home() {
   const [weatherIcon, setWeatherIcon] = useState("");
   const [windSpeed, setWindSpeed] = useState(null);
   const [feelsLike, setFeelsLike] = useState(null);
-  const [hourlyRainfall, setHourlyRainfall] = useState([]);
+  const [hourlyHumidity, setHourlyHumidity] = useState([]);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
   const [city, setCity] = useState(""); 
@@ -54,27 +78,7 @@ function Home() {
       const currentApiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
       const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
       const dailyApiURL = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=6&appid=${apiKey}&units=${units}`;
-      const Rainapi = `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
       
-      fetch(Rainapi)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Rain API response:", data);
-          if (!data.list) throw new Error("Invalid API response format");
-
-          const nextFiveHours = data.list.map((item) => {
-            const date = new Date(item.dt * 1000);
-            const hour = date.getHours();
-            const rain = item.rain ? item.rain["1h"] : 0;
-            return {
-              hour: hour,
-              rain: rain,
-            };
-          });
-
-          setHourlyRainfall(nextFiveHours);
-        });
-
       fetch(currentApiURL)
         .then((response) => response.json())
         .then((data) => {
@@ -134,6 +138,21 @@ function Home() {
           }));
 
           setHourlyTemps([{ time: "Now", imgSrc: weatherIcon, alt: "Current weather", temp: `${Math.round(currentWeather)}°C` }, ...nextFiveHours]);
+
+          const humidityData = filteredForecasts.slice(0, 5).map((item) => {
+            const date = new Date(item.dt * 1000);
+            const hour = `${date.getHours()}:00`;
+            return {
+              hour: hour,
+              humidity: item.main.humidity,
+            };
+          });
+          console.log("✅ Hourly Humidity Data:", humidityData);
+          setHourlyHumidity(humidityData);
+
+          
+
+
         })
         .catch((error) => console.error("❌ Error fetching weather data:", error));
 
@@ -209,6 +228,59 @@ function Home() {
           <h1></h1>
         </div>
       </section>
+
+
+
+
+      {hourlyHumidity.length > 0 && (
+        <section className="humidityBox">
+          <h2>Hourly Humidity Forecast</h2>
+          <Line
+            data={{
+              labels: hourlyHumidity.map((data) => data.hour),
+              datasets: [
+                {
+                  label: "Humidity (%)",
+                  data: hourlyHumidity.map((data) => data.humidity),
+                  fill: false,
+                  borderColor: "#4DB6AC",
+                  backgroundColor: "#4DB6AC",
+                  tension: 0.4,
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "top",
+                },
+                title: {
+                  display: true,
+                  text: "Humidity Over Time",
+                },
+              },
+              scales: {
+                y: {
+                  title: {
+                    display: true,
+                    text: "Humidity (%)",
+                  },
+                  min: 0,
+                  max: 100,
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Hour",
+                  },
+                },
+              },
+            }}
+          />
+        </section>
+      )}
+
 
 
 
