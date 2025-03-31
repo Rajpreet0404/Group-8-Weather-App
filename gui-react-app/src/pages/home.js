@@ -139,9 +139,9 @@ function Home() {
 
           setHourlyTemps([{ time: "Now", imgSrc: weatherIcon, alt: "Current weather", temp: `${Math.round(currentWeather)}°C` }, ...nextFiveHours]);
 
-          const humidityData = filteredForecasts.slice(0, 5).map((item) => {
+          const humidityData = filteredForecasts.slice(0, 24).map((item) => {
             const date = new Date(item.dt * 1000);
-            const hour = `${date.getHours()}:00`;
+            const hour = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit"});
             return {
               hour: hour,
               humidity: item.main.humidity,
@@ -231,53 +231,64 @@ function Home() {
 
 
 
-
+      {/* Daily Humidity Graph */}
       {hourlyHumidity.length > 0 && (
         <section className="humidityBox">
-          <h2>Hourly Humidity Forecast</h2>
-          <Line
-            data={{
-              labels: hourlyHumidity.map((data) => data.hour),
-              datasets: [
-                {
-                  label: "Humidity (%)",
-                  data: hourlyHumidity.map((data) => data.humidity),
-                  fill: false,
-                  borderColor: "#4DB6AC",
-                  backgroundColor: "#4DB6AC",
-                  tension: 0.4,
-                },
-              ],
-            }}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: "top",
-                },
-                title: {
-                  display: true,
-                  text: "Humidity Over Time",
-                },
-              },
-              scales: {
-                y: {
-                  title: {
-                    display: true,
-                    text: "Humidity (%)",
+          <h2>24-Hour Humidity Forecast</h2>
+          <div style={{ overflowX: "auto" }}>
+            <div style={{ minWidth: "800px", height: "300px" }}>
+              <Line
+                data={{
+                  labels: hourlyHumidity.map((data) => data.hour),
+                  datasets: [
+                    {
+                      label: "Humidity (%)",
+                      data: hourlyHumidity.map((data) => data.humidity),
+                      fill: true,
+                      borderColor: "#2196F3", 
+                      backgroundColor: "rgba(2, 14, 24, 0.9)", 
+                      tension: 0.4,
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: { position: "top" },
+                    title: {
+                      display: true,
+                      text: "Humidity Over Time",
+                      font: { size: 20 },
+                    },
                   },
-                  min: 0,
-                  max: 100,
-                },
-                x: {
-                  title: {
-                    display: true,
-                    text: "Hour",
+                  scales: {
+                    y: {
+                      title: {
+                        display: true,
+                        text: "Humidity (%)",
+                        font: { size: 16 },
+                      },
+                      min: 0,
+                      max: 100,
+                    },
+                    x: {
+                      title: {
+                        display: true,
+                        text: "Hour",
+                        font: { size: 16 },
+                      },
+                      ticks: {
+                        maxRotation: 90,
+                        minRotation: 45,
+                        font: { size: 14 },
+                      },
+                    },
                   },
-                },
-              },
-            }}
-          />
+                }}
+              />
+            </div>
+          </div>
         </section>
       )}
 
