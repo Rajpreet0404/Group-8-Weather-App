@@ -32,7 +32,6 @@ const Sidebar = () => {
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/profile">Profile</Link></li>
-            <li><Link to="/sports">My Sports</Link></li>
             <li><Link to="/settings">Settings</Link></li>
           </ul>
         </div>
