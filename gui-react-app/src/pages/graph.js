@@ -214,7 +214,7 @@ function GraphMain() {
         </div>
       </section> 
       {/* Hourly temperature overview */}
-      <section className="home-tempBox">
+      <section className="tempBox">
         {hourlyTemps.map((hourlyTemp, index) => (
           <div className="miniTemp" key={index}>
             <h1>{hourlyTemp.time}</h1>

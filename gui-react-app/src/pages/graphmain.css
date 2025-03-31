@@ -60,7 +60,7 @@
     z-index: 1;
 }
 
-.home-tempBox{
+.tempBox{
     grid-area: temp;
     display: flex;
     flex-direction: row;
@@ -81,6 +81,7 @@
     scroll-snap-type: x mandatory;
     scrollbar-width: thin;
     scrollbar-color: #888 #f0f0f0;
+    justify-content: space-around;
   }
   
   .tempBox::-webkit-scrollbar {
