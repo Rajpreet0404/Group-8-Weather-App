@@ -20,10 +20,28 @@ function Settings() {
   const [location, setLocation] = useState("");
 
   const handleToggle = (settingKey) => {
-    setSettings((prev) => ({
-      ...prev,
-      [settingKey]: !prev[settingKey],
-    }));
+    setSettings((prev) => {
+      const newSettings = { ...prev, [settingKey]: !prev[settingKey] };
+  
+      if (settingKey === "darkMode") { // if dark mode switched on, adds "dark-mode" tag to body
+        if (newSettings.darkMode) {
+          document.body.classList.add("dark-mode");
+        } else {
+          document.body.classList.remove("dark-mode");
+        }
+      }
+
+      if (settingKey === "dynamicBackground") { // if dynamic background switched on, adds "dynamic-background" tag to body
+        if (newSettings.dynamicBackground) {
+          document.body.classList.add("dynamic-background");
+        }
+        else {
+          document.body.classList.remove("dynamic-background");
+        }
+      }
+  
+      return newSettings;
+    });
   };
 
   const handleSelectChange = (event, settingKey) => {

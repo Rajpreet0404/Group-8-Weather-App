@@ -93,3 +93,16 @@ body{
     font-weight: 400;
     line-height: normal;
 }
+
+/* temporary bg's cause idk what image to use for dark/dynamic mode lol */
+body.dark-mode {
+    background-image: url("../../public/Background.png");
+    background-size: cover;
+    background-position: center;
+}
+
+body.dynamic-background{
+    background-image: url("../../public/Background.png"); /* replace w/ gif of sky */
+    background-size: cover;
+    background-position: center;
+}
