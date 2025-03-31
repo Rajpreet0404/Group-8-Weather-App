@@ -224,7 +224,6 @@ function Home() {
         ))}
         <div className="miniTemp">
           <h1></h1>
-          <button>...</button>
           <h1></h1>
         </div>
       </section>
