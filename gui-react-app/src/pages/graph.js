@@ -187,7 +187,7 @@ function GraphMain() {
   }
 
   return (
-    <section className="app">
+    <section className="graph-app">
       {/* Location flex box */}
       <section className="locationBox">
         <div className="weatherimage">
@@ -214,7 +214,7 @@ function GraphMain() {
         </div>
       </section> 
       {/* Hourly temperature overview */}
-      <section className="tempBox">
+      <section className="home-tempBox">
         {hourlyTemps.map((hourlyTemp, index) => (
           <div className="miniTemp" key={index}>
             <h1>{hourlyTemp.time}</h1>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./reset.css"; // Import the CSS file
 import "./homestyle.css"; // Import the CSS file
 
@@ -142,42 +143,42 @@ function Home() {
   return (
     <section className="app">
       {/* Location flex box */}
-      <section className="locationBox">
-        <div className="weatherimage">
+      <section className="home-locationBox">
+        <div className="home-weatherimage">
           <img src="/locationimage.png" alt="Background" />
         </div>
-        <div className="locationtext">
+        <div className="home-locationtext">
           <h1>{city ? `${city}` : "Loading location..."}</h1>
         </div>
       </section>
       {/* Weather flex box */}
-      <section className="weatherBox">
-        <div className="currentweather">
+      <section className="home-weatherBox">
+        <div className="home-currentweather">
           <h1>{currentWeather ? `${Math.round(currentWeather)}°C` : "Loading..."}</h1>
         </div>
-        <div className="weathericon">
+        <div className="home-weathericon">
           <img src={weatherIcon || "/defaultIcon.png"} // fallback to default icon if loading
             alt="Current Weather"/>
         </div>
-        <div className="windspeed">
+        <div className="home-windspeed">
           <h1>{windSpeed ? `Wind Speed: ${windSpeed} mph` : "Loading wind speed..."}</h1>
         </div>
-        <div className="feelslike">
+        <div className="home-feelslike">
           <h1>{feelsLike !== null ? `Feels like ${Math.round(feelsLike)}°C` : "Loading feels like..."}</h1>
         </div>
       </section> 
       {/* Hourly temperature overview */}
-      <section className="tempBox">
+      <section className="home-tempBox">
         {hourlyTemps.map((hourlyTemp, index) => (
-          <div className="miniTemp" key={index}>
+          <div className="home-miniTemp" key={index}>
             <h1>{hourlyTemp.time}</h1>
             <img src={hourlyTemp.imgSrc} alt={hourlyTemp.alt} />
             <h1>{hourlyTemp.temp}</h1>
           </div>
         ))}
-        <div className="miniTemp">
+        <div className="home-miniTemp">
           <h1></h1>
-          <button>...</button>
+          <Link to="/graph" className="miniTempLink">...</Link>
           <h1></h1>
         </div>
       </section>
