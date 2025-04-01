@@ -26,7 +26,7 @@ const Sidebar = () => {
         </div>
         <div className="greeting">
           <h1>Hello,</h1>
-          <h2>John Doe</h2>
+          <h2>{sessionStorage.getItem("userName")}</h2>
         </div>
         <div className="items">
           <ul>

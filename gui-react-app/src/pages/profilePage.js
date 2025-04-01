@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './profilePage.css';
 
 const ProfilePage = () => {
-    const [profileImage, setProfileImage] = useState('/image16.png'); 
+    const [profileImage, setProfileImage] = useState(sessionStorage.getItem('profileImage') || '/image16.png'); 
     const [name, setName] = useState(sessionStorage.getItem('userName') || '');
-
-    useEffect(() => {
-        sessionStorage.setItem('userName', name);
-    }, [name]);
-
-    const handleNameChange = (e) => {
+const handleNameChange = (e) => {
         setName(e.target.value);
     };
 
@@ -21,9 +16,14 @@ const ProfilePage = () => {
         }
     };
 
+    const handleSubmit = () => {
+        sessionStorage.setItem('userName', name);
+        sessionStorage.setItem('profileImage', profileImage);
+        alert('Profile saved successfully!');
+    };
+
     return (
         <div className="profile-page">
-            <div className="menu-icon"></div>
             <h1 className="profile-title">Profile</h1>
             
             <div className="profile-pic-container">
@@ -50,6 +50,8 @@ const ProfilePage = () => {
                     placeholder="Name"
                 />
             </div>
+
+            <button className="submit-btn" onClick={handleSubmit}>Save Profile</button>
         </div>
     );
 };
