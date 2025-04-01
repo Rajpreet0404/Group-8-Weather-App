@@ -25,7 +25,7 @@ const Sidebar = () => {
           <img src="../../closemenu.png" className="closebutton" alt="Close" />
         </div>
         <div className="greeting">
-          <h1>Hello,</h1>
+          <h1>Hello</h1>
           <h2>{sessionStorage.getItem("userName")}</h2>
         </div>
         <div className="items">
