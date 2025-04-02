@@ -94,7 +94,7 @@ function Home() {
           const filteredForecasts = data.list.filter((item) => {
             const forecastDate = new Date(item.dt * 1000);
             const forecastHour = forecastDate.getHours();
-            return forecastHour > currentHour && forecastHour < 24;
+            return forecastHour <= currentHour + 5;
           });
 
           const nextFiveHours = filteredForecasts.slice(0, 5).map((item) => ({
