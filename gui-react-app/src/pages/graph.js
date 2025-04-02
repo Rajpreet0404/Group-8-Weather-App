@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./reset.css"; // Import the CSS file
-import "./graphmain.css"; // Import the CSS file
+import "./reset.css"; 
+import "./graphmain.css";
 
 import { Line } from "react-chartjs-2";
 import {
@@ -44,10 +44,29 @@ function GraphMain() {
   const [hourlyHumidity, setHourlyHumidity] = useState([]);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
-  const [city, setCity] = useState("");
-  const [clothingAdvice, setClothingAdvice] = useState("");
- 
-
+  const [city, setCity] = useState(""); 
+  const [darkMode, setDarkMode] = useState(false);
+  const [dynamicBackground, setDynamicBackground] = useState(false);
+  
+  useEffect(() => {
+    const loadSettings = () => {
+      const savedSettings = localStorage.getItem('weatherAppSettings');
+      if (savedSettings) {
+        const parsedSettings = JSON.parse(savedSettings);
+        setDarkMode(parsedSettings.darkMode || false);
+        setDynamicBackground(parsedSettings.dynamicBackground || false);
+      }
+    };
+    
+    loadSettings();
+    
+    window.addEventListener('storage', loadSettings);
+    
+    return () => {
+      window.removeEventListener('storage', loadSettings);
+    };
+  }, []);
+  
   useEffect(() => {
     const getLocation = () => {
       if (navigator.geolocation) {
@@ -217,8 +236,9 @@ function GraphMain() {
   
   
 
+  // Using className properly with the app-wide classes to be consistent with other components
   return (
-    <section className="graph-app">
+    <section className={`graph-app ${darkMode ? 'dark-mode' : ''} ${dynamicBackground ? 'dynamic-background' : ''}`}>
       {/* Location flex box */}
       <section className="locationBox">
         <div className="weatherimage">

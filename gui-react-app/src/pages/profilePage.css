@@ -130,3 +130,21 @@ input {
         font-size: 14px;
     }
 }
+
+body.dark-mode .profile-page {
+    background-image: url("../../public/darkModeBackground.png");
+    background-size: cover;
+    background-position: center;
+}
+
+.container.dark-mode .profile-page{
+    color: white
+}
+
+
+
+body.dynamic-background .profile-page{
+    background-image: url("../../public/dynamicbg.gif");
+    background-size: cover;
+    background-position: center;
+}

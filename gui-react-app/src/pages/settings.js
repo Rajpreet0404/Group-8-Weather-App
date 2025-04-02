@@ -19,7 +19,10 @@ function Settings() {
   };
 
   const [settings, setSettings] = useState(getInitialSettings);
-  const [manualLocation, setManualLocation] = useState(settings.manualLocation || "");
+  const [manualLocation, setManualLocation] = useState(() => {
+    const initialSettings = getInitialSettings();
+    return initialSettings.manualLocation || "";
+  });
 
   useEffect(() => {
     localStorage.setItem('weatherAppSettings', JSON.stringify(settings));
@@ -38,6 +41,22 @@ function Settings() {
       document.body.classList.remove("dynamic-background");
     }
   }, [settings]);
+
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'weatherAppSettings') {
+        const newSettings = JSON.parse(e.newValue);
+        setSettings(newSettings);
+        setManualLocation(newSettings.manualLocation || "");
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   const getFontSizeValue = (size) => {
     switch (size) {

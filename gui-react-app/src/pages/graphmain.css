@@ -318,4 +318,26 @@
     background-color: #ffeeee66;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
+
+    background-image: url("../../public/darkhomepage.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.app.dark-mode {
+    background-image: url("../../public/darkhomepage.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.app.dark-mode{
+    color: white
+}
+
+
+
+.app.dynamic-background{
+    background-image: url("../../public/dynamicbg.gif"); 
+    background-size: cover;
+    background-position: center;
 }
