@@ -1,59 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./reset.css";
 import "./style.css";
-import { Switch, Select, MenuItem, TextField } from "@mui/material";
+import { Switch, Select, MenuItem, TextField, Button } from "@mui/material";
 
 function Settings() {
-  const initialState = {
-    darkMode: false,
-    dynamicBackground: false,
-    fontSize: "Small",
-    temperatureUnit: false,
-    currentLocation: "A",
-    updateFrequency: "1 Hour",
-    weatherAlerts: false,
-    notifyTraining: false,
-    dailyForecast: "Morning",
+  const getInitialSettings = () => {
+    const savedSettings = localStorage.getItem('weatherAppSettings');
+    return savedSettings ? JSON.parse(savedSettings) : {
+      darkMode: false,
+      dynamicBackground: false,
+      fontSize: "Medium",
+      temperatureUnit: "celsius", 
+      currentLocation: "A", 
+      manualLocation: "", 
+      updateFrequency: 60 * 60 * 1000, 
+      dailyForecast: "Morning",
+    };
   };
 
-  const [settings, setSettings] = useState(initialState);
-  const [location, setLocation] = useState("");
+  const [settings, setSettings] = useState(getInitialSettings);
+  const [manualLocation, setManualLocation] = useState(settings.manualLocation || "");
+
+  useEffect(() => {
+    localStorage.setItem('weatherAppSettings', JSON.stringify(settings));
+    
+    document.documentElement.style.fontSize = getFontSizeValue(settings.fontSize);
+    
+    if (settings.darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+    
+    if (settings.dynamicBackground) {
+      document.body.classList.add("dynamic-background");
+    } else {
+      document.body.classList.remove("dynamic-background");
+    }
+  }, [settings]);
+
+  const getFontSizeValue = (size) => {
+    switch (size) {
+      case "Small": return "14px";
+      case "Medium": return "16px";
+      case "Large": return "18px";
+      default: return "14px";
+    }
+  };
 
   const handleToggle = (settingKey) => {
     setSettings((prev) => {
-      const newSettings = { ...prev, [settingKey]: !prev[settingKey] };
-  
-      if (settingKey === "darkMode") { // if dark mode switched on, adds "dark-mode" tag to body
-        if (newSettings.darkMode) {
-          document.body.classList.add("dark-mode");
-        } else {
-          document.body.classList.remove("dark-mode");
-        }
+      const newSettings = { ...prev };
+      
+      if (settingKey === "temperatureUnit") {
+        newSettings.temperatureUnit = prev.temperatureUnit === "celsius" ? "kelvin" : "celsius";
+      } else {
+        newSettings[settingKey] = !prev[settingKey];
       }
-
-      if (settingKey === "dynamicBackground") { // if dynamic background switched on, adds "dynamic-background" tag to body
-        if (newSettings.dynamicBackground) {
-          document.body.classList.add("dynamic-background");
-        }
-        else {
-          document.body.classList.remove("dynamic-background");
-        }
-      }
-  
+      
       return newSettings;
     });
   };
 
   const handleSelectChange = (event, settingKey) => {
-    setSettings((prev) => ({
-      ...prev,
-      [settingKey]: event.target.value,
-    }));
+    setSettings((prev) => {
+      const newSettings = { ...prev };
+      
+      if (settingKey === "updateFrequency") {
+        const hours = parseInt(event.target.value);
+        newSettings.updateFrequency = hours * 60 * 60 * 1000;
+      } else {
+        newSettings[settingKey] = event.target.value;
+      }
+      
+      return newSettings;
+    });
+  };
+
+  const handleSetLocation = () => {
+    if (manualLocation.trim()) {
+      setSettings(prev => ({
+        ...prev,
+        currentLocation: "M",
+        manualLocation: manualLocation
+      }));
+    }
+  };
+
+  const getUpdateFrequencyDisplay = () => {
+    const hours = settings.updateFrequency / (60 * 60 * 1000);
+    return `${hours} Hour${hours > 1 ? 's' : ''}`;
   };
 
   return (
     <div className="container">
-
+          
       <header className="box title">
         <div className="settingstext">
           <h1>Settings</h1>
@@ -74,8 +115,12 @@ function Settings() {
         </article>
         <article className="settings">
           <h1>Font Size</h1>
-          <Select value={settings.fontSize} onChange={(e) => handleSelectChange(e, "fontSize")}
-            variant="standard" disableUnderline>
+          <Select 
+            value={settings.fontSize} 
+            onChange={(e) => handleSelectChange(e, "fontSize")}
+            variant="standard" 
+            disableUnderline
+          >
             <MenuItem value="Small">Small</MenuItem>
             <MenuItem value="Medium">Medium</MenuItem>
             <MenuItem value="Large">Large</MenuItem>
@@ -83,7 +128,13 @@ function Settings() {
         </article>
         <article className="settings">
           <h1>Temperature Unit</h1>
-          <Switch checked={settings.temperatureUnit} onChange={() => handleToggle("temperatureUnit")} />
+          <div className="unit-display">
+            <span>{settings.temperatureUnit === "celsius" ? "°C" : "K"}</span>
+            <Switch 
+              checked={settings.temperatureUnit === "kelvin"} 
+              onChange={() => handleToggle("temperatureUnit")} 
+            />
+          </div>
         </article>
       </section>
 
@@ -93,52 +144,47 @@ function Settings() {
         </div>
         <article className="settings">
           <h1>Current Location</h1>
-          <Select value={settings.currentLocation} onChange={(e) => handleSelectChange(e, "currentLocation")}
-            variant="standard" disableUnderline>
+          <Select 
+            value={settings.currentLocation} 
+            onChange={(e) => handleSelectChange(e, "currentLocation")}
+            variant="standard" 
+            disableUnderline
+          >
             <MenuItem value="A">Auto</MenuItem>
             <MenuItem value="M">Manual</MenuItem>
           </Select>
         </article>
         <article className="settings">
           <h1>Set Location</h1>
-          <TextField 
-            value={location} 
-            onChange={(e) => setLocation(e.target.value)} 
-            variant="standard" 
-            InputProps={{ disableUnderline: true }} 
-            placeholder="Enter location"
-          />
+          <div className="location-input">
+            <TextField 
+              value={manualLocation} 
+              onChange={(e) => setManualLocation(e.target.value)} 
+              variant="standard" 
+              InputProps={{ disableUnderline: true }} 
+              placeholder="Enter location"
+            />
+            <Button 
+              variant="contained" 
+              size="small" 
+              onClick={handleSetLocation}
+              style={{ marginLeft: '10px' }}
+            >
+              Set
+            </Button>
+          </div>
         </article>
         <article className="settings">
           <h1>Update Frequency</h1>
-          <Select value={settings.updateFrequency} onChange={(e) => handleSelectChange(e, "updateFrequency")}
-            variant="standard" disableUnderline>
-            <MenuItem value="1 Hour">1 Hour</MenuItem>
-            <MenuItem value="3 Hours">3 Hours</MenuItem>
-            <MenuItem value="6 Hours">6 Hours</MenuItem>
-          </Select>
-        </article>
-      </section>
-
-      <section className="box appearance">
-        <div className="appearancetitle">
-          <h1>Notifications Settings</h1>
-        </div>
-        <article className="settings">
-          <h1>Weather Alerts</h1>
-          <Switch checked={settings.weatherAlerts} onChange={() => handleToggle("weatherAlerts")} />
-        </article>
-        <article className="settings">
-          <h1>Notify On Ideal Time To Train</h1>
-          <Switch checked={settings.notifyTraining} onChange={() => handleToggle("notifyTraining")} />
-        </article>
-        <article className="settings">
-          <h1>Daily Forecast</h1>
-          <Select value={settings.dailyForecast} onChange={(e) => handleSelectChange(e, "dailyForecast")}
-            variant="standard" disableUnderline>
-            <MenuItem value="Morning">Morning</MenuItem>
-            <MenuItem value="Afternoon">Afternoon</MenuItem>
-            <MenuItem value="Evening">Evening</MenuItem>
+          <Select 
+            value={settings.updateFrequency / (60 * 60 * 1000)} 
+            onChange={(e) => handleSelectChange(e, "updateFrequency")}
+            variant="standard" 
+            disableUnderline
+          >
+            <MenuItem value={1}>1 Hour</MenuItem>
+            <MenuItem value={3}>3 Hours</MenuItem>
+            <MenuItem value={6}>6 Hours</MenuItem>
           </Select>
         </article>
       </section>

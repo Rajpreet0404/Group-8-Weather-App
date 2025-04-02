@@ -35,6 +35,8 @@ body{
 
 .title{
     justify-content: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 .settingstext {
@@ -96,13 +98,19 @@ body{
 
 /* temporary bg's cause idk what image to use for dark/dynamic mode lol */
 body.dark-mode {
-    background-image: url("../../public/Background.png");
+    background-image: url("../../public/darkModeBackground.png");
     background-size: cover;
     background-position: center;
 }
 
+.container.dark-mode{
+    color: white
+}
+
+
+
 body.dynamic-background{
-    background-image: url("../../public/Background.png"); /* replace w/ gif of sky */
+    background-image: url("../../public/dynamicbg.gif"); /* replace w/ gif of sky */
     background-size: cover;
     background-position: center;
 }
