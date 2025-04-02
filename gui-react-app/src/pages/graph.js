@@ -44,7 +44,9 @@ function GraphMain() {
   const [hourlyHumidity, setHourlyHumidity] = useState([]);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
-  const [city, setCity] = useState(""); 
+  const [city, setCity] = useState("");
+  const [clothingAdvice, setClothingAdvice] = useState("");
+ 
 
   useEffect(() => {
     const getLocation = () => {
@@ -103,6 +105,8 @@ function GraphMain() {
           } else {
             throw new Error("Weather data is missing or malformed.");
           }
+          getClothingAdvice();
+
         })
         .catch((error) => {
           console.error("❌ Error fetching current weather data:", error.message);
@@ -185,6 +189,33 @@ function GraphMain() {
   function getWeatherIcon(iconCode) {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }
+
+  const getClothingAdvice = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/clothing-advice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          temp: Math.round(currentWeather),
+          feelsLike: Math.round(feelsLike),
+          windSpeed: windSpeed,
+          city: city
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      console.log("Clothing advice:", data.advice);
+      setClothingAdvice(data.advice);
+    } catch (error) {
+      console.error("Error fetching clothing advice:", error);
+    }
+  };
+  
+  
 
   return (
     <section className="graph-app">
@@ -288,13 +319,12 @@ function GraphMain() {
               />
             </div>
           </div>
-        </section>
+        </section>        
       )}
-
-
-
-
-
+      <section className="gptBox">
+        <h2>Clothing Advice</h2>
+        <p>{clothingAdvice ? clothingAdvice : "Loading advice..."}</p>
+      </section>
     </section>
   );
 }
