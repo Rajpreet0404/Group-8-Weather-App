@@ -96,6 +96,7 @@ body{
     line-height: normal;
 }
 
+/* temporary bg's cause idk what image to use for dark/dynamic mode lol */
 body.dark-mode {
     background-image: url("../../public/darkModeBackground.png");
     background-size: cover;
@@ -109,7 +110,7 @@ body.dark-mode {
 
 
 body.dynamic-background{
-    background-image: url("../../public/dynamicbg.gif"); 
+    background-image: url("../../public/dynamicbg.gif"); /* replace w/ gif of sky */
     background-size: cover;
     background-position: center;
 }

@@ -4,31 +4,7 @@ import './profilePage.css';
 const ProfilePage = () => {
     const [profileImage, setProfileImage] = useState(sessionStorage.getItem('profileImage') || '/image16.png'); 
     const [name, setName] = useState(sessionStorage.getItem('userName') || '');
-    const [darkMode, setDarkMode] = useState(false);
-    const [dynamicBackground, setDynamicBackground] = useState(false);
-
-    useEffect(() => {
-        sessionStorage.setItem('userName', name);
-
-        const loadSettings = () => {
-            const savedSettings = localStorage.getItem('weatherAppSettings');
-            if (savedSettings) {
-                const parsedSettings = JSON.parse(savedSettings);
-                setDarkMode(parsedSettings.darkMode || false);
-                setDynamicBackground(parsedSettings.dynamicBackground || false);
-            }
-        };
-
-        loadSettings();
-
-        window.addEventListener('storage', loadSettings);
-        
-        return () => {
-            window.removeEventListener('storage', loadSettings);
-        };
-    }, [name]);
-
-    const handleNameChange = (e) => {
+const handleNameChange = (e) => {
         setName(e.target.value);
     };
 
@@ -46,11 +22,8 @@ const ProfilePage = () => {
         alert('Profile saved successfully!');
     };
 
-    const profileClasses = `profile-page${darkMode ? ' dark-mode' : ''}${dynamicBackground ? ' dynamic-background' : ''}`;
-
     return (
-        <div className={profileClasses}>
-            <div className="menu-icon"></div>
+        <div className="profile-page">
             <h1 className="profile-title">Profile</h1>
             
             <div className="profile-pic-container">
