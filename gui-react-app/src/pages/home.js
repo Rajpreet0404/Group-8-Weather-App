@@ -71,14 +71,14 @@ function Home() {
             },
             (error) => {
               console.error("Error getting location:", error);
-              setLat(51.525012);
-              setLon(-0.033456);
+              setLat(51.5235);
+              setLon(0.0330);
             }
           );
         } else {
           console.log("Geolocation is not supported by this browser.");
-          setLat(51.525012);
-          setLon(-0.033456);
+          setLat(51.5235);
+          setLon(0.0330);
         }
       } else if (settings.currentLocation === "M" && settings.manualLocation) {
         // Use manual location
@@ -93,18 +93,18 @@ function Home() {
           } else {
             console.error("Location not found");
             // Fall back to default location
-            setLat(51.525012);
-            setLon(-0.033456);
+            setLat(51.5235);
+            setLon(0.0330);
           }
         } catch (error) {
           console.error("Error getting location coordinates:", error);
-          setLat(51.525012);
-          setLon(-0.033456);
+          setLat(51.5235);
+          setLon(0.0330);
         }
       } else {
         // Fall back to default location
-        setLat(51.525012);
-        setLon(-0.033456);
+        setLat(51.5235);
+        setLon(0.0330);
       }
     };
 
@@ -172,7 +172,7 @@ function Home() {
         const filteredForecasts = data.list.filter((item) => {
           const forecastDate = new Date(item.dt * 1000);
           const forecastHour = forecastDate.getHours();
-          return forecastHour > currentHour && forecastHour < 24;
+          return forecastHour <= currentHour + 5;
         });
 
         const nextFiveHours = filteredForecasts.slice(0, 5).map((item) => ({
