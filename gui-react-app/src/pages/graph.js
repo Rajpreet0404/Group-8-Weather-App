@@ -47,17 +47,20 @@ function GraphMain() {
   const [city, setCity] = useState(""); 
   const [darkMode, setDarkMode] = useState(false);
   const [dynamicBackground, setDynamicBackground] = useState(false);
+  const [settings, setSettings] = useState(null);
+
   
   useEffect(() => {
     const loadSettings = () => {
       const savedSettings = localStorage.getItem('weatherAppSettings');
       if (savedSettings) {
         const parsedSettings = JSON.parse(savedSettings);
+        setSettings(parsedSettings); 
         setDarkMode(parsedSettings.darkMode || false);
         setDynamicBackground(parsedSettings.dynamicBackground || false);
       }
     };
-    
+  
     loadSettings();
     
     window.addEventListener('storage', loadSettings);
@@ -67,31 +70,58 @@ function GraphMain() {
     };
   }, []);
   
+  
   useEffect(() => {
-    const getLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            setLat(latitude);
-            setLon(longitude);
-          },
-          (error) => {
-            console.error("Error getting location:", error);
-            setLat(51.525012);  
-            setLon(-0.033456);   
+    if (!settings) return;
+
+    const getLocation = async () => {
+      if (settings.currentLocation === "A") {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const latitude = position.coords.latitude;
+              const longitude = position.coords.longitude;
+              setLat(latitude);
+              setLon(longitude);
+            },
+            (error) => {
+              console.error("Error getting location:", error);
+              setLat(51.525012);
+              setLon(-0.033456);
+            }
+          );
+        } else {
+          console.log("Geolocation is not supported by this browser.");
+          setLat(51.525012);
+          setLon(-0.033456);
+        }
+      } else if (settings.currentLocation === "M" && settings.manualLocation) {
+        try {
+          const geocodeURL = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(settings.manualLocation)}&limit=1&appid=${apiKey}`;
+          const response = await fetch(geocodeURL);
+          const data = await response.json();
+          
+          if (data && data.length > 0) {
+            setLat(data[0].lat);
+            setLon(data[0].lon);
+          } else {
+            console.error("Location not found");
+            setLat(51.525012);
+            setLon(-0.033456);
           }
-        );
+        } catch (error) {
+          console.error("Error getting location coordinates:", error);
+          setLat(51.525012);
+          setLon(-0.033456);
+        }
       } else {
-        console.log("Geolocation is not supported by this browser.");
-        setLat(51.525012);  
-        setLon(-0.033456);  
+        setLat(51.525012);
+        setLon(-0.033456);
       }
     };
 
     getLocation();
-  }, []);
+  }, [settings]);
 
   useEffect(() => {
     if (lat && lon) {
@@ -206,10 +236,10 @@ function GraphMain() {
   function getWeatherIcon(iconCode) {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }
+  const appClasses = `app${darkMode ? ' dark-mode' : ''}${dynamicBackground ? ' dynamic-background' : ''}`;
 
-  // Using className properly with the app-wide classes to be consistent with other components
   return (
-    <section className={`graph-app ${darkMode ? 'dark-mode' : ''} ${dynamicBackground ? 'dynamic-background' : ''}`}>
+    <section className={appClasses}>
       {/* Location flex box */}
       <section className="locationBox">
         <div className="weatherimage">
