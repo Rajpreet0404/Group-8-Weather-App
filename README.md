@@ -1,8 +1,12 @@
-# Group-8-Weather-App
-A weather app catered to outdoor sports players, coaches and trainers, implemented using React.
+⛅ Group 8 Weather App
+A weather application tailored for outdoor sports players, coaches, and trainers. Built using React for the frontend and Express.js for the backend, this app provides detailed weather insights to help users plan training and match sessions efficiently.
 
-npm install chart.js react-chartjs-2
-cd to backend
-in one terminal, run: npm install express cors
-then: npm install dotenv
-then open another terminal, cd to gui-react-app run npm start
+🛠️ Features
+Real-time weather updates
+
+Weather visualisation using charts
+
+Clean and responsive UI
+
+Tailored for outdoor sports needs
+
