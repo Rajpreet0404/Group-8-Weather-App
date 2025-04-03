@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./reset.css"; 
-import "./graphmain.css";
+import "./reset.css"; // Import the CSS file
+import "./graphmain.css"; // Import the CSS file
 
 import { Line } from "react-chartjs-2";
 import {
@@ -44,84 +44,35 @@ function GraphMain() {
   const [hourlyHumidity, setHourlyHumidity] = useState([]);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
-  const [city, setCity] = useState(""); 
-  const [darkMode, setDarkMode] = useState(false);
-  const [dynamicBackground, setDynamicBackground] = useState(false);
-  const [settings, setSettings] = useState(null);
+  const [city, setCity] = useState("");
+  const [clothingAdvice, setClothingAdvice] = useState("");
+ 
 
-  
   useEffect(() => {
-    const loadSettings = () => {
-      const savedSettings = localStorage.getItem('weatherAppSettings');
-      if (savedSettings) {
-        const parsedSettings = JSON.parse(savedSettings);
-        setSettings(parsedSettings); 
-        setDarkMode(parsedSettings.darkMode || false);
-        setDynamicBackground(parsedSettings.dynamicBackground || false);
-      }
-    };
-  
-    loadSettings();
-    
-    window.addEventListener('storage', loadSettings);
-    
-    return () => {
-      window.removeEventListener('storage', loadSettings);
-    };
-  }, []);
-  
-  
-  useEffect(() => {
-    if (!settings) return;
-
-    const getLocation = async () => {
-      if (settings.currentLocation === "A") {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const latitude = position.coords.latitude;
-              const longitude = position.coords.longitude;
-              setLat(latitude);
-              setLon(longitude);
-            },
-            (error) => {
-              console.error("Error getting location:", error);
-              setLat(51.525012);
-              setLon(-0.033456);
-            }
-          );
-        } else {
-          console.log("Geolocation is not supported by this browser.");
-          setLat(51.525012);
-          setLon(-0.033456);
-        }
-      } else if (settings.currentLocation === "M" && settings.manualLocation) {
-        try {
-          const geocodeURL = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(settings.manualLocation)}&limit=1&appid=${apiKey}`;
-          const response = await fetch(geocodeURL);
-          const data = await response.json();
-          
-          if (data && data.length > 0) {
-            setLat(data[0].lat);
-            setLon(data[0].lon);
-          } else {
-            console.error("Location not found");
-            setLat(51.525012);
-            setLon(-0.033456);
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            setLat(latitude);
+            setLon(longitude);
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            setLat(51.525012);  
+            setLon(-0.033456);   
           }
-        } catch (error) {
-          console.error("Error getting location coordinates:", error);
-          setLat(51.525012);
-          setLon(-0.033456);
-        }
+        );
       } else {
-        setLat(51.525012);
-        setLon(-0.033456);
+        console.log("Geolocation is not supported by this browser.");
+        setLat(51.525012);  
+        setLon(-0.033456);  
       }
     };
 
     getLocation();
-  }, [settings]);
+  }, []);
 
   useEffect(() => {
     if (lat && lon) {
@@ -154,6 +105,8 @@ function GraphMain() {
           } else {
             throw new Error("Weather data is missing or malformed.");
           }
+          getClothingAdvice();
+
         })
         .catch((error) => {
           console.error("❌ Error fetching current weather data:", error.message);
@@ -173,7 +126,7 @@ function GraphMain() {
           const filteredForecasts = data.list.filter((item) => {
             const forecastDate = new Date(item.dt * 1000);
             const forecastHour = forecastDate.getHours();
-            return forecastHour > currentHour && forecastHour < 24;
+            return forecastHour <= currentHour + 24; // Filter for the next 24 hours
           });
 
           const nextFiveHours = filteredForecasts.slice(0, 24).map((item) => ({
@@ -236,10 +189,36 @@ function GraphMain() {
   function getWeatherIcon(iconCode) {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }
-  const appClasses = `app${darkMode ? ' dark-mode' : ''}${dynamicBackground ? ' dynamic-background' : ''}`;
+
+  const getClothingAdvice = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/clothing-advice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          temp: Math.round(currentWeather),
+          feelsLike: Math.round(feelsLike),
+          windSpeed: windSpeed,
+          city: city
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      console.log("Clothing advice:", data.advice);
+      setClothingAdvice(data.advice);
+    } catch (error) {
+      console.error("Error fetching clothing advice:", error);
+    }
+  };
+  
+  
 
   return (
-    <section className={appClasses}>
+    <section className="graph-app">
       {/* Location flex box */}
       <section className="locationBox">
         <div className="weatherimage">
@@ -340,8 +319,12 @@ function GraphMain() {
               />
             </div>
           </div>
-        </section>
+        </section>        
       )}
+      <section className="gptBox">
+        <h2>Clothing Advice</h2>
+        <p>{clothingAdvice ? clothingAdvice : "Loading advice..."}</p>
+      </section>
     </section>
   );
 }
