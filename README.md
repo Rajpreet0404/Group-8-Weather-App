@@ -17,16 +17,32 @@ Follow the steps below to run the application locally on your machine.
 1. Clone the Repository
 
   In Terminal:
+  
   git clone https://github.com/your-username/Group-8-Weather-App.git
+  
   cd Group-8-Weather-App
 
 2. Install Dependencies
 
   In Terminal:
+  
   npm install
+  
   npm install chart.js react-chartjs-2
 
-  cd src/backend
+  cd gui-react-app/src/backend
+
+  npm install express cors
+
+  npm install dotenv
+
+  cd ../..
+
+  npm start
+
+  
+
+  
 
   
 
