@@ -10,17 +10,6 @@
     position: relative;
 }
 
-
-.menu-icon {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    width: 30px;
-    height: 30px;
-    background: url('../../public/image10.png') no-repeat center center/cover;
-}
-
-
 .profile-title {
     font-size: 30px;
     font-weight: bold;
@@ -88,21 +77,6 @@ input {
     font-size: 14px;
 }
 
-.submit-btn {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.submit-btn:hover {
-    background-color: #0056b3;
-}
-
 
 @media (max-width: 480px) {
     .profile-page {
@@ -129,4 +103,22 @@ input {
         max-width: 200px;
         font-size: 14px;
     }
+}
+
+body.dark-mode .profile-page {
+    background-image: url("../../public/darkModeBackground.png");
+    background-size: cover;
+    background-position: center;
+}
+
+.container.dark-mode .profile-page{
+    color: white
+}
+
+
+
+body.dynamic-background .profile-page{
+    background-image: url("../../public/dynamicbg.gif");
+    background-size: cover;
+    background-position: center;
 }
