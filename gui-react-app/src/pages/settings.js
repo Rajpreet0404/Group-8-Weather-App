@@ -84,6 +84,7 @@ function Settings() {
         currentLocation: "M",
         manualLocation: manualLocation
       }));
+      sessionStorage.setItem('manualLocation', manualLocation.trim()); // Store in sessionStorage
     }
   };
 

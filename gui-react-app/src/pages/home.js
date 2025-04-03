@@ -24,6 +24,33 @@ function Home() {
 
   useEffect(() => {
     const getLocation = () => {
+      const manualLocation = localStorage.getItem("manualLocation");
+    
+      if (manualLocation) {
+        // Fetch coordinates for the manual location
+        fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${manualLocation}&limit=1&appid=${apiKey}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data.length > 0) {
+              const { lat: manualLat, lon: manualLon } = data[0];
+              setLat(manualLat);
+              setLon(manualLon);
+            } else {
+              console.error("❌ Manual location not found. Falling back to auto-detected location.");
+              fallbackToAutoLocation();
+            }
+          })
+          .catch((error) => {
+            console.error("❌ Error fetching manual location coordinates:", error.message);
+            fallbackToAutoLocation();
+          });
+      } else {
+        // Fallback to auto-detected location
+        fallbackToAutoLocation();
+      }
+    };
+      
+    const fallbackToAutoLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
