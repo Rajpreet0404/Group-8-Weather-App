@@ -40,17 +40,25 @@ Follow the steps below to run the application locally on your machine.
 
   npm install dotenv
 
-  cd ../..
 
 ```
 
 # 3. Run the program
+
+
+Navigate to gui-react-app folder then run
 ```
 
   npm start
 ```
 
+# 👨‍💻 Technologies Used
 
+- Frontend: React, Chart.js, react-chartjs-2, HTML, CSS
+
+- Backend: Express.js, Node.js, CORS
+
+- Environment Management: dotenv
 
   
 
