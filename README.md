@@ -8,5 +8,25 @@ Weather visualisation using charts
 
 Clean and responsive UI
 
-Tailored for outdoor sports needs
+Tailored for outdoor sports needs using AI
+
+
+# 🚀 Getting Started
+Follow the steps below to run the application locally on your machine.
+
+1. Clone the Repository
+
+  In Terminal:
+  git clone https://github.com/your-username/Group-8-Weather-App.git
+  cd Group-8-Weather-App
+
+2. Install Dependencies
+
+  In Terminal:
+  npm install
+  npm install chart.js react-chartjs-2
+
+  cd src/backend
+
+  
 
