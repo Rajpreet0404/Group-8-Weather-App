@@ -13,7 +13,6 @@ function Settings() {
       temperatureUnit: "celsius", 
       currentLocation: "A", 
       manualLocation: "", 
-      updateFrequency: 60 * 60 * 1000, 
       dailyForecast: "Morning",
     };
   };
@@ -87,7 +86,6 @@ function Settings() {
       
       if (settingKey === "updateFrequency") {
         const hours = parseInt(event.target.value);
-        newSettings.updateFrequency = hours * 60 * 60 * 1000;
       } else {
         newSettings[settingKey] = event.target.value;
 
@@ -111,11 +109,6 @@ function Settings() {
       }));
       setManualLocation("");
     }
-  };
-
-  const getUpdateFrequencyDisplay = () => {
-    const hours = settings.updateFrequency / (60 * 60 * 1000);
-    return `${hours} Hour${hours > 1 ? 's' : ''}`;
   };
 
   return (
@@ -199,19 +192,6 @@ function Settings() {
               Set
             </Button>
           </div>
-        </article>
-        <article className="settings">
-          <h1>Update Frequency</h1>
-          <Select 
-            value={settings.updateFrequency / (60 * 60 * 1000)} 
-            onChange={(e) => handleSelectChange(e, "updateFrequency")}
-            variant="standard" 
-            disableUnderline
-          >
-            <MenuItem value={1}>1 Hour</MenuItem>
-            <MenuItem value={3}>3 Hours</MenuItem>
-            <MenuItem value={6}>6 Hours</MenuItem>
-          </Select>
         </article>
       </section>
 
