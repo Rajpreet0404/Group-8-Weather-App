@@ -1,5 +1,5 @@
 # ⛅ Group 8 Weather App
-A weather application tailored for outdoor sports players, coaches, and trainers. Built using React for the frontend and Express.js for the backend, this app provides detailed weather insights to help users plan training and match sessions efficiently.
+A weather application tailored for outdoor sports players. Built using React for the frontend and Javascript for the backend, this app provides detailed weather insights to help users plan training and match sessions efficiently.
 
 # 🛠️ Features
 Real-time weather updates
