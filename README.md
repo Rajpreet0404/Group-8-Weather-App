@@ -2,15 +2,15 @@
 A weather application tailored for outdoor sports players. Built using React for the frontend and Javascript for the backend, this app provides detailed weather insights to help users plan training and match sessions efficiently.
 
 # 🛠️ Features
-Real-time weather updates
+- Real-time weather updates
 
-Weather visualisation using charts
+- Weather visualisation using charts
 
-Clean and responsive UI
+- Clean and responsive UI
 
-Tailored for outdoor sports needs using AI
+- Tailored for outdoor sports needs using AI
 
-Customisable settings to tailor the website to your needs
+- Customisable settings to tailor the website to your needs
 
 
 # 🚀 Getting Started
