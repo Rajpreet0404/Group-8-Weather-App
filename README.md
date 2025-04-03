@@ -25,6 +25,8 @@ Follow the steps below to run the application locally on your machine.
 # 2. Install Dependencies
 
   In Terminal:
+
+
   
 ```
   
@@ -39,6 +41,11 @@ Follow the steps below to run the application locally on your machine.
   npm install dotenv
 
   cd ../..
+
+```
+
+# 3. Run the program
+```
 
   npm start
 ```
