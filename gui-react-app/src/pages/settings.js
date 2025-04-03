@@ -9,7 +9,7 @@ function Settings() {
     return savedSettings ? JSON.parse(savedSettings) : {
       darkMode: false,
       dynamicBackground: false,
-      fontSize: "Medium",
+      fontSize: "Small",
       temperatureUnit: "celsius", 
       currentLocation: "A", 
       manualLocation: "", 
@@ -53,7 +53,7 @@ function Settings() {
       const newSettings = { ...prev };
       
       if (settingKey === "temperatureUnit") {
-        newSettings.temperatureUnit = prev.temperatureUnit === "celsius" ? "kelvin" : "celsius";
+        newSettings.temperatureUnit = prev.temperatureUnit === "celsius" ? "Fahrenheit" : "celsius";
       } else {
         newSettings[settingKey] = !prev[settingKey];
       }
@@ -84,6 +84,7 @@ function Settings() {
         currentLocation: "M",
         manualLocation: manualLocation
       }));
+      sessionStorage.setItem('manualLocation', manualLocation.trim()); // Store in sessionStorage
     }
   };
 
@@ -129,9 +130,9 @@ function Settings() {
         <article className="settings">
           <h1>Temperature Unit</h1>
           <div className="unit-display">
-            <span>{settings.temperatureUnit === "celsius" ? "°C" : "K"}</span>
+            <span>{settings.temperatureUnit === "celsius" ? "°C" : "F"}</span>
             <Switch 
-              checked={settings.temperatureUnit === "kelvin"} 
+              checked={settings.temperatureUnit === "Fahrenheit"} 
               onChange={() => handleToggle("temperatureUnit")} 
             />
           </div>
@@ -173,19 +174,6 @@ function Settings() {
               Set
             </Button>
           </div>
-        </article>
-        <article className="settings">
-          <h1>Update Frequency</h1>
-          <Select 
-            value={settings.updateFrequency / (60 * 60 * 1000)} 
-            onChange={(e) => handleSelectChange(e, "updateFrequency")}
-            variant="standard" 
-            disableUnderline
-          >
-            <MenuItem value={1}>1 Hour</MenuItem>
-            <MenuItem value={3}>3 Hours</MenuItem>
-            <MenuItem value={6}>6 Hours</MenuItem>
-          </Select>
         </article>
       </section>
 
