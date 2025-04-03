@@ -208,7 +208,7 @@ function Home() {
 
           return {
             day: index === 0 ? "Today" : dayName,
-            temp: `${formatTemperature(item.temp.max, false)}/${formatTemperature(item.temp.min, false)}`,
+            temp: `${formatTemperature(item.temp.max, true)}/${formatTemperature(item.temp.min, true)}`,
             imgSrc: getWeatherIcon(item.weather[0].icon),
             alt: item.weather[0].description,
           };
@@ -227,9 +227,9 @@ function Home() {
   function formatTemperature(temp, includeUnit = true) {
     if (!settings) return `${Math.round(temp)}°C`;
     
-    if (settings.temperatureUnit === "kelvin") {
-      const kelvin = temp + 273.15;
-      return includeUnit ? `${Math.round(kelvin)}K` : `${Math.round(kelvin)}`;
+    if (settings.temperatureUnit === "fahrenheit") {
+      const fahrenheit = (temp * 9) / 5 + 32;
+      return includeUnit ? `${Math.round(fahrenheit)}°F` : `${Math.round(fahrenheit)}`;
     } else {
       return includeUnit ? `${Math.round(temp)}°C` : `${Math.round(temp)}°`;
     }

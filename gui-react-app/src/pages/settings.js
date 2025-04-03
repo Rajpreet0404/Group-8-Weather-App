@@ -72,7 +72,7 @@ function Settings() {
       const newSettings = { ...prev };
       
       if (settingKey === "temperatureUnit") {
-        newSettings.temperatureUnit = prev.temperatureUnit === "celsius" ? "kelvin" : "celsius";
+        newSettings.temperatureUnit = prev.temperatureUnit === "celsius" ? "fahrenheit" : "celsius";
       } else {
         newSettings[settingKey] = !prev[settingKey];
       }
@@ -155,9 +155,9 @@ function Settings() {
         <article className="settings">
           <h1>Temperature Unit</h1>
           <div className="unit-display">
-            <span>{settings.temperatureUnit === "celsius" ? "°C" : "K"}</span>
+            <span>{settings.temperatureUnit === "celsius" ? "°C" : "°F"}</span>
             <Switch 
-              checked={settings.temperatureUnit === "kelvin"} 
+              checked={settings.temperatureUnit === "fahrenheit"} 
               onChange={() => handleToggle("temperatureUnit")} 
             />
           </div>
