@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "./reset.css"; // Import the CSS file
-import "./homestyle.css"; // Import the CSS file
+import "./reset.css";
+import "./homestyle.css";
 
 const apiKey = "fa0315bf1aaefb0d246fe0e1feeca3b3";
 
@@ -20,155 +20,225 @@ function Home() {
   const [feelsLike, setFeelsLike] = useState(null);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
-  const [city, setCity] = useState(""); 
+  const [city, setCity] = useState("");
+  const [settings, setSettings] = useState(null);
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
+  const [darkMode, setDarkMode] = useState(false);
+  const [dynamicBackground, setDynamicBackground] = useState(false);
 
   useEffect(() => {
-    const getLocation = () => {
-      const manualLocation = localStorage.getItem("manualLocation");
-    
-      if (manualLocation) {
-        // Fetch coordinates for the manual location
-        fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${manualLocation}&limit=1&appid=${apiKey}`)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data && data.length > 0) {
-              const { lat: manualLat, lon: manualLon } = data[0];
-              setLat(manualLat);
-              setLon(manualLon);
-            } else {
-              console.error("❌ Manual location not found. Falling back to auto-detected location.");
-              fallbackToAutoLocation();
-            }
-          })
-          .catch((error) => {
-            console.error("❌ Error fetching manual location coordinates:", error.message);
-            fallbackToAutoLocation();
-          });
+    const loadSettings = () => {
+      const savedSettings = localStorage.getItem('weatherAppSettings');
+      if (savedSettings) {
+        const parsedSettings = JSON.parse(savedSettings);
+        setSettings(parsedSettings);
+        setDarkMode(parsedSettings.darkMode || false);
+        setDynamicBackground(parsedSettings.dynamicBackground || false);
       } else {
-        // Fallback to auto-detected location
-        fallbackToAutoLocation();
+        setSettings({
+          temperatureUnit: "celsius",
+          currentLocation: "A",
+          manualLocation: "",
+          updateFrequency: 60 * 60 * 1000, // 1hr
+          darkMode: false,
+          dynamicBackground: false
+        });
       }
     };
-      
-    const fallbackToAutoLocation = () => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            setLat(latitude);
-            setLon(longitude);
-          },
-          (error) => {
-            console.error("Error getting location:", error);
-            setLat(51.525012);  
-            setLon(-0.033456);   
+
+    loadSettings();
+    window.addEventListener('storage', loadSettings);
+    
+    return () => {
+      window.removeEventListener('storage', loadSettings);
+    };
+  }, []);
+
+  // Set up location based on settings
+  useEffect(() => {
+    if (!settings) return;
+
+    const getLocation = async () => {
+      if (settings.currentLocation === "A") {
+        // Use automatic geolocation
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const latitude = position.coords.latitude;
+              const longitude = position.coords.longitude;
+              setLat(latitude);
+              setLon(longitude);
+            },
+            (error) => {
+              console.error("Error getting location:", error);
+              setLat(51.525012);
+              setLon(-0.033456);
+            }
+          );
+        } else {
+          console.log("Geolocation is not supported by this browser.");
+          setLat(51.525012);
+          setLon(-0.033456);
+        }
+      } else if (settings.currentLocation === "M" && settings.manualLocation) {
+        // Use manual location
+        try {
+          const geocodeURL = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(settings.manualLocation)}&limit=1&appid=${apiKey}`;
+          const response = await fetch(geocodeURL);
+          const data = await response.json();
+          
+          if (data && data.length > 0) {
+            setLat(data[0].lat);
+            setLon(data[0].lon);
+          } else {
+            console.error("Location not found");
+            // Fall back to default location
+            setLat(51.525012);
+            setLon(-0.033456);
           }
-        );
+        } catch (error) {
+          console.error("Error getting location coordinates:", error);
+          setLat(51.525012);
+          setLon(-0.033456);
+        }
       } else {
-        console.log("Geolocation is not supported by this browser.");
-        setLat(51.525012);  
-        setLon(-0.033456);  
+        // Fall back to default location
+        setLat(51.525012);
+        setLon(-0.033456);
       }
     };
 
     getLocation();
-  }, []);
+  }, [settings]);
 
+  // Periodic updates based on settings
   useEffect(() => {
-    if (lat && lon) {
-      const units = "metric";
-      const currentApiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
-      const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
-      const dailyApiURL = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=5&appid=${apiKey}&units=${units}`;
+    if (!settings) return;
 
-      fetch(currentApiURL)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Current Weather API response:", data);
-          if (data.cod !== 200) {
-            throw new Error("Error fetching current weather data");
-          }
+    const updateInterval = setInterval(() => {
+      if (Date.now() - lastUpdate >= settings.updateFrequency) {
+        setLastUpdate(Date.now());
+      }
+    }, 60000); // Check every minute
 
-          const cityName = data.name;
+    return () => clearInterval(updateInterval);
+  }, [settings, lastUpdate]);
 
-          if (data.weather && Array.isArray(data.weather) && data.weather.length > 0) {
-            const { temp, feels_like } = data.main;
-            const weatherIconCode = data.weather[0].icon;
-            const windSpeedInMph = data.wind ? (data.wind.speed * 2.237).toFixed(1) : "N/A"; 
+  // Fetch weather data
+  useEffect(() => {
+    if (!lat || !lon || !settings) return;
 
-            setCity(cityName); 
-            setCurrentWeather(temp);
-            setFeelsLike(feels_like);
-            setWindSpeed(windSpeedInMph); 
-            setWeatherIcon(getWeatherIcon(weatherIconCode));
-          } else {
-            throw new Error("Weather data is missing or malformed.");
-          }
-        })
-        .catch((error) => {
-          console.error("❌ Error fetching current weather data:", error.message);
+    const units = "metric";
+    const currentApiURL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
+    const hourlyApiURL = `https://api.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`;
+    const dailyApiURL = `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=5&appid=${apiKey}&units=${units}`;
+
+    fetch(currentApiURL)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Current Weather API response:", data);
+        if (data.cod !== 200) {
+          throw new Error("Error fetching current weather data");
+        }
+
+        const cityName = data.name;
+
+        if (data.weather && Array.isArray(data.weather) && data.weather.length > 0) {
+          const { temp, feels_like } = data.main;
+          const weatherIconCode = data.weather[0].icon;
+          const windSpeedInMph = data.wind ? (data.wind.speed * 2.237).toFixed(1) : "N/A";
+
+          setCity(cityName);
+          setCurrentWeather(temp);
+          setFeelsLike(feels_like);
+          setWindSpeed(windSpeedInMph);
+          setWeatherIcon(getWeatherIcon(weatherIconCode));
+        } else {
+          throw new Error("Weather data is missing or malformed.");
+        }
+      })
+      .catch((error) => {
+        console.error("❌ Error fetching current weather data:", error.message);
+      });
+
+    fetch(hourlyApiURL)
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.list) throw new Error("Invalid API response format");
+
+        const now = new Date();
+        const currentHour = now.getHours();
+
+        const filteredForecasts = data.list.filter((item) => {
+          const forecastDate = new Date(item.dt * 1000);
+          const forecastHour = forecastDate.getHours();
+          return forecastHour > currentHour && forecastHour < 24;
         });
 
-      fetch(hourlyApiURL)
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.list) throw new Error("Invalid API response format");
+        const nextFiveHours = filteredForecasts.slice(0, 5).map((item) => ({
+          time: new Date(item.dt * 1000).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          imgSrc: getWeatherIcon(item.weather[0].icon),
+          alt: item.weather[0].description,
+          temp: formatTemperature(item.main.temp),
+        }));
 
-          const now = new Date();
-          const currentHour = now.getHours();
+        setHourlyTemps([
+          { 
+            time: "Now", 
+            imgSrc: weatherIcon, 
+            alt: "Current weather", 
+            temp: currentWeather ? formatTemperature(currentWeather) : "Loading..." 
+          }, 
+          ...nextFiveHours
+        ]);
+      })
+      .catch((error) => console.error("❌ Error fetching weather data:", error));
 
-          const filteredForecasts = data.list.filter((item) => {
-            const forecastDate = new Date(item.dt * 1000);
-            const forecastHour = forecastDate.getHours();
-            return forecastHour <= currentHour + 5;
-          });
+    fetch(dailyApiURL)
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.list) throw new Error("Invalid API response format");
 
-          const nextFiveHours = filteredForecasts.slice(0, 5).map((item) => ({
-            time: new Date(item.dt * 1000).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
+        const nextSevenDays = data.list.map((item, index) => {
+          const date = new Date(item.dt * 1000);
+          const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+
+          return {
+            day: index === 0 ? "Today" : dayName,
+            temp: `${formatTemperature(item.temp.max, false)}/${formatTemperature(item.temp.min, false)}`,
             imgSrc: getWeatherIcon(item.weather[0].icon),
             alt: item.weather[0].description,
-            temp: `${Math.round(item.main.temp)}°C`,
-          }));
+          };
+        });
 
-          setHourlyTemps([{ time: "Now", imgSrc: weatherIcon, alt: "Current weather", temp: `${Math.round(currentWeather)}°C` }, ...nextFiveHours]);
-        })
-        .catch((error) => console.error("❌ Error fetching weather data:", error));
-
-        fetch(dailyApiURL)
-        .then((response) => response.json())
-        .then((data) => {
-          if (!data.list) throw new Error("Invalid API response format");
-
-          const nextSevenDays = data.list.map((item, index) => {
-            const date = new Date(item.dt * 1000);
-            const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
-
-            return {
-              day: index === 0 ? "Today" : dayName,
-              temp: `${Math.round(item.temp.max)}°/${Math.round(item.temp.min)}°`,
-              imgSrc: getWeatherIcon(item.weather[0].icon),
-              alt: item.weather[0].description,
-            };
-          });
-
-          setDailyTemps(nextSevenDays);
-        })
-        .catch((error) => console.error("❌ Error fetching daily forecast:", error));
-
-    }
-  }, [lat, lon, currentWeather, weatherIcon]); 
-
+        setDailyTemps(nextSevenDays);
+      })
+      .catch((error) => console.error("❌ Error fetching daily forecast:", error));
+  }, [lat, lon, lastUpdate, settings, currentWeather, weatherIcon]);
 
   function getWeatherIcon(iconCode) {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }
 
+  // Format temperature based on settings
+  function formatTemperature(temp, includeUnit = true) {
+    if (!settings) return `${Math.round(temp)}°C`;
+    
+    if (settings.temperatureUnit === "kelvin") {
+      const kelvin = temp + 273.15;
+      return includeUnit ? `${Math.round(kelvin)}K` : `${Math.round(kelvin)}`;
+    } else {
+      return includeUnit ? `${Math.round(temp)}°C` : `${Math.round(temp)}°`;
+    }
+  }
+
+  const appClasses = `app${darkMode ? ' dark-mode' : ''}${dynamicBackground ? ' dynamic-background' : ''}`;
+
   return (
-    <section className="app">
+    <section className={appClasses}>
       {/* Location flex box */}
       <section className="home-locationBox">
         <div className="home-weatherimage">
@@ -181,19 +251,25 @@ function Home() {
       {/* Weather flex box */}
       <section className="home-weatherBox">
         <div className="home-currentweather">
-          <h1>{currentWeather ? `${Math.round(currentWeather)}°C` : "Loading..."}</h1>
+          <h1>{currentWeather ? formatTemperature(currentWeather) : "Loading..."}</h1>
         </div>
         <div className="home-weathericon">
-          <img src={weatherIcon || "/defaultIcon.png"} // fallback to default icon if loading
-            alt="Current Weather"/>
+          <img
+            src={weatherIcon || "/defaultIcon.png"}
+            alt="Current Weather"
+          />
         </div>
         <div className="home-windspeed">
           <h1>{windSpeed ? `Wind Speed: ${windSpeed} mph` : "Loading wind speed..."}</h1>
         </div>
         <div className="home-feelslike">
-          <h1>{feelsLike !== null ? `Feels like ${Math.round(feelsLike)}°C` : "Loading feels like..."}</h1>
+          <h1>
+            {feelsLike !== null
+              ? `Feels like ${formatTemperature(feelsLike)}`
+              : "Loading feels like..."}
+          </h1>
         </div>
-      </section> 
+      </section>
       {/* Hourly temperature overview */}
       <section className="home-tempBox">
         {hourlyTemps.map((hourlyTemp, index) => (
@@ -204,9 +280,11 @@ function Home() {
           </div>
         ))}
         <div className="home-miniTemp">
-          <h1></h1>
-          <Link to="/graph" className="miniTempLink">...</Link>
-          <h1></h1>
+          <h1>More</h1>
+          <Link to="/graph" className="miniTempLink">
+            ...
+          </Link>
+          <h1>Details</h1>
         </div>
       </section>
       {/* Daily temperature overview */}

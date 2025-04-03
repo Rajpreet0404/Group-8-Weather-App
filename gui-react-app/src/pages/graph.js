@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./reset.css"; // Import the CSS file
-import "./graphmain.css"; // Import the CSS file
+import "./reset.css"; 
+import "./graphmain.css";
 
 import { Line } from "react-chartjs-2";
 import {
@@ -44,11 +44,29 @@ function GraphMain() {
   const [hourlyHumidity, setHourlyHumidity] = useState([]);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
-  const [city, setCity] = useState("");
-  const [clothingAdvice, setClothingAdvice] = useState("");
-  const [sportsAdvice, setSportsAdvice] = useState("");
- 
-
+  const [city, setCity] = useState(""); 
+  const [darkMode, setDarkMode] = useState(false);
+  const [dynamicBackground, setDynamicBackground] = useState(false);
+  
+  useEffect(() => {
+    const loadSettings = () => {
+      const savedSettings = localStorage.getItem('weatherAppSettings');
+      if (savedSettings) {
+        const parsedSettings = JSON.parse(savedSettings);
+        setDarkMode(parsedSettings.darkMode || false);
+        setDynamicBackground(parsedSettings.dynamicBackground || false);
+      }
+    };
+    
+    loadSettings();
+    
+    window.addEventListener('storage', loadSettings);
+    
+    return () => {
+      window.removeEventListener('storage', loadSettings);
+    };
+  }, []);
+  
   useEffect(() => {
     const getLocation = () => {
       if (navigator.geolocation) {
@@ -106,9 +124,6 @@ function GraphMain() {
           } else {
             throw new Error("Weather data is missing or malformed.");
           }
-          getClothingAdvice();
-          getSportsAdvice();
-
         })
         .catch((error) => {
           console.error("❌ Error fetching current weather data:", error.message);
@@ -128,7 +143,7 @@ function GraphMain() {
           const filteredForecasts = data.list.filter((item) => {
             const forecastDate = new Date(item.dt * 1000);
             const forecastHour = forecastDate.getHours();
-            return forecastHour <= currentHour + 24; // Filter for the next 24 hours
+            return forecastHour > currentHour && forecastHour < 24;
           });
 
           const nextFiveHours = filteredForecasts.slice(0, 24).map((item) => ({
@@ -192,59 +207,9 @@ function GraphMain() {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }
 
-  const getClothingAdvice = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/clothing-advice", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          temp: Math.round(currentWeather),
-          feelsLike: Math.round(feelsLike),
-          windSpeed: windSpeed,
-          city: city
-        })
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
-      }
-  
-      const data = await response.json();
-      console.log("Clothing advice:", data.advice);
-      setClothingAdvice(data.advice);
-    } catch (error) {
-      console.error("Error fetching clothing advice:", error);
-    }
-  };
-
-  const getSportsAdvice = async () => {
-    try {
-        const response = await fetch("http://localhost:5000/api/sports-advice", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                temp: Math.round(currentWeather),
-                windSpeed: windSpeed,
-                city: city
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        console.log("Sports advice:", data.advice);
-        setSportsAdvice(data.advice);
-    } catch (error) {
-        console.error("Error fetching sports advice:", error);
-    }
-};
-  
-  
-
+  // Using className properly with the app-wide classes to be consistent with other components
   return (
-    <section className="graph-app">
+    <section className={`graph-app ${darkMode ? 'dark-mode' : ''} ${dynamicBackground ? 'dynamic-background' : ''}`}>
       {/* Location flex box */}
       <section className="locationBox">
         <div className="weatherimage">
@@ -345,18 +310,9 @@ function GraphMain() {
               />
             </div>
           </div>
-        </section>        
+        </section>
       )}
-      <section className="gptBox">
-        <h2>Clothing Advice</h2>
-        <p>{clothingAdvice ? clothingAdvice : "Loading advice..."}</p>
-      </section>
-      <section className="sportsBox">
-        <h2>Sports Advice</h2>
-        <p>{sportsAdvice ? sportsAdvice : "Loading sports advice..."}</p>
-      </section>
     </section>
-    
   );
 }
 

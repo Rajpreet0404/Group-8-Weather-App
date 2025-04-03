@@ -9,7 +9,7 @@ function Settings() {
     return savedSettings ? JSON.parse(savedSettings) : {
       darkMode: false,
       dynamicBackground: false,
-      fontSize: "Small",
+      fontSize: "Medium",
       temperatureUnit: "celsius", 
       currentLocation: "A", 
       manualLocation: "", 
@@ -19,7 +19,10 @@ function Settings() {
   };
 
   const [settings, setSettings] = useState(getInitialSettings);
-  const [manualLocation, setManualLocation] = useState(settings.manualLocation || "");
+  const [manualLocation, setManualLocation] = useState(() => {
+    const initialSettings = getInitialSettings();
+    return initialSettings.manualLocation || "";
+  });
 
   useEffect(() => {
     localStorage.setItem('weatherAppSettings', JSON.stringify(settings));
@@ -39,6 +42,22 @@ function Settings() {
     }
   }, [settings]);
 
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'weatherAppSettings') {
+        const newSettings = JSON.parse(e.newValue);
+        setSettings(newSettings);
+        setManualLocation(newSettings.manualLocation || "");
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
   const getFontSizeValue = (size) => {
     switch (size) {
       case "Small": return "14px";
@@ -53,7 +72,7 @@ function Settings() {
       const newSettings = { ...prev };
       
       if (settingKey === "temperatureUnit") {
-        newSettings.temperatureUnit = prev.temperatureUnit === "celsius" ? "Fahrenheit" : "celsius";
+        newSettings.temperatureUnit = prev.temperatureUnit === "celsius" ? "kelvin" : "celsius";
       } else {
         newSettings[settingKey] = !prev[settingKey];
       }
@@ -84,7 +103,6 @@ function Settings() {
         currentLocation: "M",
         manualLocation: manualLocation
       }));
-      sessionStorage.setItem('manualLocation', manualLocation.trim()); // Store in sessionStorage
     }
   };
 
@@ -130,9 +148,9 @@ function Settings() {
         <article className="settings">
           <h1>Temperature Unit</h1>
           <div className="unit-display">
-            <span>{settings.temperatureUnit === "celsius" ? "°C" : "F"}</span>
+            <span>{settings.temperatureUnit === "celsius" ? "°C" : "K"}</span>
             <Switch 
-              checked={settings.temperatureUnit === "Fahrenheit"} 
+              checked={settings.temperatureUnit === "kelvin"} 
               onChange={() => handleToggle("temperatureUnit")} 
             />
           </div>
@@ -174,6 +192,19 @@ function Settings() {
               Set
             </Button>
           </div>
+        </article>
+        <article className="settings">
+          <h1>Update Frequency</h1>
+          <Select 
+            value={settings.updateFrequency / (60 * 60 * 1000)} 
+            onChange={(e) => handleSelectChange(e, "updateFrequency")}
+            variant="standard" 
+            disableUnderline
+          >
+            <MenuItem value={1}>1 Hour</MenuItem>
+            <MenuItem value={3}>3 Hours</MenuItem>
+            <MenuItem value={6}>6 Hours</MenuItem>
+          </Select>
         </article>
       </section>
 
