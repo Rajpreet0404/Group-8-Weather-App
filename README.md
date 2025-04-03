@@ -26,6 +26,8 @@ Follow the steps below to run the application locally on your machine.
 
   In Terminal:
   
+```
+  
   npm install
   
   npm install chart.js react-chartjs-2
@@ -39,6 +41,9 @@ Follow the steps below to run the application locally on your machine.
   cd ../..
 
   npm start
+```
+
+
 
   
 
