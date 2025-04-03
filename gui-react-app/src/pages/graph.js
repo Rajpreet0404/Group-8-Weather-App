@@ -46,6 +46,7 @@ function GraphMain() {
   const [lon, setLon] = useState(null);
   const [city, setCity] = useState("");
   const [clothingAdvice, setClothingAdvice] = useState("");
+  const [sportsAdvice, setSportsAdvice] = useState("");
  
 
   useEffect(() => {
@@ -106,6 +107,7 @@ function GraphMain() {
             throw new Error("Weather data is missing or malformed.");
           }
           getClothingAdvice();
+          getSportsAdvice();
 
         })
         .catch((error) => {
@@ -214,6 +216,30 @@ function GraphMain() {
       console.error("Error fetching clothing advice:", error);
     }
   };
+
+  const getSportsAdvice = async () => {
+    try {
+        const response = await fetch("http://localhost:5000/api/sports-advice", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                temp: Math.round(currentWeather),
+                windSpeed: windSpeed,
+                city: city
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("Sports advice:", data.advice);
+        setSportsAdvice(data.advice);
+    } catch (error) {
+        console.error("Error fetching sports advice:", error);
+    }
+};
   
   
 
@@ -325,7 +351,12 @@ function GraphMain() {
         <h2>Clothing Advice</h2>
         <p>{clothingAdvice ? clothingAdvice : "Loading advice..."}</p>
       </section>
+      <section className="sportsBox">
+        <h2>Sports Advice</h2>
+        <p>{sportsAdvice ? sportsAdvice : "Loading sports advice..."}</p>
+      </section>
     </section>
+    
   );
 }
 
