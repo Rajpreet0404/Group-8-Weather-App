@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import AppWrapper from './AppWrapper';
 import Settings from "./pages/settings";
@@ -8,6 +8,11 @@ import GraphMain from "./pages/graph";
 import ProfilePage from "./pages/profilePage";
 
 function App() {
+  useEffect(() => {
+    sessionStorage.clear();
+    console.log("Session storage cleared on app load!");
+  }, []);
+
   return (
     <Router>
       <Sidebar />

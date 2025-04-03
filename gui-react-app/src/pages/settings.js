@@ -90,6 +90,12 @@ function Settings() {
         newSettings.updateFrequency = hours * 60 * 60 * 1000;
       } else {
         newSettings[settingKey] = event.target.value;
+
+          // Clear manualLocation if currentLocation is set to "A" (Auto)
+          if (settingKey === "currentLocation" && event.target.value === "A") {
+            setManualLocation("");
+            sessionStorage.removeItem("manualLocation");
+        }
       }
       
       return newSettings;
@@ -103,6 +109,7 @@ function Settings() {
         currentLocation: "M",
         manualLocation: manualLocation
       }));
+      setManualLocation("");
     }
   };
 
