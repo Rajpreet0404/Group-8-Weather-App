@@ -14,7 +14,7 @@ Tailored for outdoor sports needs using AI
 # 🚀 Getting Started
 Follow the steps below to run the application locally on your machine.
 
-1. Clone the Repository
+# 1. Clone the Repository
 
   In Terminal:
   
@@ -22,7 +22,7 @@ Follow the steps below to run the application locally on your machine.
   
   cd Group-8-Weather-App
 
-2. Install Dependencies
+# 2. Install Dependencies
 
   In Terminal:
   
