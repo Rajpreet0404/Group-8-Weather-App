@@ -40,11 +40,16 @@ const ProfilePage = () => {
         }
     };
 
+    const handleSubmit = () => {
+        sessionStorage.setItem('userName', name);
+        sessionStorage.setItem('profileImage', profileImage);
+        alert('Profile saved successfully!');
+    };
+
     const profileClasses = `profile-page${darkMode ? ' dark-mode' : ''}${dynamicBackground ? ' dynamic-background' : ''}`;
 
     return (
         <div className={profileClasses}>
-            <div className="menu-icon"></div>
             <h1 className="profile-title">Profile</h1>
             
             <div className="profile-pic-container">
@@ -71,6 +76,8 @@ const ProfilePage = () => {
                     placeholder="Name"
                 />
             </div>
+
+            <button className="submit-btn" onClick={handleSubmit}>Save Profile</button>
         </div>
     );
 };
