@@ -296,10 +296,20 @@ function GraphMain() {
   
   const appClasses = `app${darkMode ? ' dark-mode' : ''}${dynamicBackground ? ' dynamic-background' : ''}`;
 
-  
+  // Format temperature based on settings
+  function formatTemperature(temp, includeUnit = true) {
+    if (!settings) return `${Math.round(temp)}°C`;
+    
+    if (settings.temperatureUnit === "fahrenheit") {
+      const fahrenheit = (temp * 9) / 5 + 32;
+      return includeUnit ? `${Math.round(fahrenheit)}°F` : `${Math.round(fahrenheit)}`;
+    } else {
+      return includeUnit ? `${Math.round(temp)}°C` : `${Math.round(temp)}°`;
+    }
+  }
 
   return (
-    <section className="graph-app">
+    <section className={`graph-app ${appClasses}`}>
       {/* Location flex box */}
       <section className="locationBox">
         <div className="weatherimage">
@@ -312,7 +322,7 @@ function GraphMain() {
       {/* Weather flex box */}
       <section className="weatherBox">
         <div className="currentweather">
-          <h1>{currentWeather ? `${Math.round(currentWeather)}°C` : "Loading..."}</h1>
+          <h1>{currentWeather ? formatTemperature(currentWeather, true) : "Loading..."}</h1>
         </div>
         <div className="weathericon">
           <img src={weatherIcon || "/defaultIcon.png"} // fallback to default icon if loading
@@ -322,7 +332,11 @@ function GraphMain() {
           <h1>{windSpeed ? `Wind Speed: ${windSpeed} mph` : "Loading wind speed..."}</h1>
         </div>
         <div className="feelslike">
-          <h1>{feelsLike !== null ? `Feels like ${Math.round(feelsLike)}°C` : "Loading feels like..."}</h1>
+          <h1>
+          {feelsLike !== null
+            ? `Feels like ${formatTemperature(feelsLike, true)}`
+            : "Loading feels like..."}
+          </h1>
         </div>
       </section> 
       {/* Hourly temperature overview */}
@@ -331,7 +345,7 @@ function GraphMain() {
           <div className="miniTemp" key={index}>
             <h1>{hourlyTemp.time}</h1>
             <img src={hourlyTemp.imgSrc} alt={hourlyTemp.alt} />
-            <h1>{hourlyTemp.temp}</h1>
+            <h1>{formatTemperature(parseFloat(hourlyTemp.temp), true)}</h1>
           </div>
         ))}
         <div className="miniTemp">

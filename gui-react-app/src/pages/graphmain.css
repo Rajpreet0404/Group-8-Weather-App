@@ -307,8 +307,29 @@
     margin-bottom: 16px;
   }
 
-  .gptBox{
+  .gptcontainer{
     grid-area: gptBox;
+    display: flex;
+    flex-direction: row;
+    width: 75%;
+    gap: 1rem;
+  }
+
+  .gptBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;     
+    width: 75%;          
+    max-height: 100%;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #ffeeee66;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.sportsBox{
     display: flex;
     flex-direction: column;
     justify-content: center;
