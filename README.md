@@ -21,10 +21,11 @@ Follow the steps below to run the application locally on your machine.
   In Terminal:
 
   ```
-  git clone https://github.com/your-username/Group-8-Weather-App.git
+  git clone https://github.com/Rajpreet0404/Group-8-Weather-App.git
 ```
   ```
   cd Group-8-Weather-App
+  cd gui-react-app
 ```
 
 # 2. Install Dependencies
