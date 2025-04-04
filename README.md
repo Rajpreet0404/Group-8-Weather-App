@@ -62,9 +62,7 @@ Follow the steps below to run the application locally on your machine.
 
 # 👨‍💻 Technologies Used
 
-- Frontend: React, Chart.js, react-chartjs-2, HTML, CSS
-
-- Backend: Express.js, Node.js, CORS
+- Frontend: React, Chart.js, react-chartjs-2, CSS
 
 - Environment Management: dotenv
 
