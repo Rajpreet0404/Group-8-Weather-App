@@ -1,0 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+.graph-app{
+    gap: 1rem;
+    overflow-y:auto; /* Enables vertical scrolling */
+    overflow-x: hidden; /* Hides horizontal scrolling */
+    display: grid;
+    background-image: url("../../public/Background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height:100vh;
+    height: 100vh;
+    width: 100vw;
+    font-family: "Inter", sans-serif;
+    align-items: center;
+    justify-items: center;
+    grid-template-areas: 
+    "location location location"
+    ".. weather .."
+    "temp temp temp"
+
+    "humidityBox humidityBox humidityBox"
+    "gptBox gptBox gptBox";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.5fr 1fr 1fr 2fr 1fr;
+    z-index: 0;
+
+}
+
+.locationBox aside button{
+    border-style: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.locationBox aside button img{
+    width: 2.4375rem;
+    height: 2.4375rem;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.locationBox{
+    grid-area: location;
+    display:flex;
+    height: 5rem;
+    width: 100%;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    z-index: 1;
+    margin-bottom: 1rem;
+}
+
+.weatherBox{
+    grid-area: weather;
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-start;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    margin-top: -4rem;
+    z-index: 1;
+}
+
+.tempBox{
+    grid-area: temp;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 75%;
+    height: 55%;
+    flex-shrink: 0;
+    border-radius: 1.25rem;
+    background: rgba(255, 238, 238, 0.4);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    margin-top: -3rem;
+    padding: 1rem;
+    gap: 1rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f0f0f0;
+    justify-content: space-around;
+    margin-bottom: -2rem;
+  }
+  
+  .tempBox::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .tempBox::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .tempBox::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+  }
+
+.miniTemp button{
+    color: #000;
+    font-family: Inter;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    border-style: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+    
+.weatherimage img{
+    width: 2.0625rem;
+    height: 2.0625rem;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+    padding: 0.5rem;
+}
+
+.locationtext h1{
+    color: #000;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Inter;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.weathericon img{
+    width: 10vh;
+    height: auto;
+    filter: drop-shadow(5px 5px 5px black);
+}
+
+.currentweather h1{
+    color: #000;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Inter;
+    font-size: 3.375rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+
+.windspeed h1{
+    color: #000;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Inter;
+    font-size: 0.91rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    padding: 0.5rem;
+}
+
+.feelslike h1{
+    color: #000;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-family: Inter;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.miniTemp{
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.miniTemp h1{
+    color: #000;
+    font-family: Inter;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.miniTemp img{
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.dailyTempBox{
+    grid-area: tempBox;
+    min-width: 29rem;
+    width: 75%;
+    height: 125%;
+    flex-shrink: 0;
+    border-radius: 1.25rem;
+    background: rgb(255, 238, 238, 0.4);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: -7rem;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.dailyTemp{
+    width: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.dailyTemp h1{
+    margin-left: 10%;
+    flex: 1;
+    color: #000;
+    font-family: Inter;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.dailyTemp h2{
+    flex: 1;
+    color: #000;
+    font-family: Inter;
+    font-size: 0.9375rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.dailyTemp img{
+    margin-right: 10%;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.activitiesBox{
+    margin-top: -2rem;
+    grid-area: activities;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.activityImages{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    min-width: 31rem;
+    width: 100%;
+}
+
+.activityImages img{
+    width: 4.5rem;
+    height: 4.5rem;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.activity{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 6.25rem;
+    height: 6.25rem;
+    flex-shrink: 0;
+    border-radius: 1.25rem;
+    background: rgb(255, 238, 238, 0.4);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.humidityBox {
+    max-height: 100%;
+    grid-area: humidityBox; 
+    width: 75%;          
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #ffeeee66;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;     
+    overflow-y: auto;
+  }
+  
+  .humidityBox h2 {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .gptcontainer{
+    grid-area: gptBox;
+    display: flex;
+    flex-direction: row;
+    width: 75%;
+    gap: 1rem;
+  }
+
+  .gptBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;     
+    width: 75%;          
+    max-height: 100%;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #ffeeee66;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.sportsBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;     
+    width: 75%;          
+    max-height: 100%;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #ffeeee66;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
